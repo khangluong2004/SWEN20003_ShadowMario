@@ -3,9 +3,9 @@ package enums;
 /**
  * Enum for the game enums.EndingStage
  */
-public enum EndingStage {
+public enum GameStage {
     WINNING,
     START_LOSING,
     FINISH_LOSING,
-    NOT_END
+    PLAYING
 }

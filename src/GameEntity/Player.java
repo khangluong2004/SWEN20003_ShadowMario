@@ -5,7 +5,7 @@ import bagel.Font;
 import bagel.Image;
 import bagel.Window;
 import bagel.util.Point;
-import enums.EndingStage;
+import enums.GameStage;
 import enums.MoveDirection;
 import utils.DistanceUtils;
 import utils.Message;
@@ -38,7 +38,7 @@ public class Player extends GameEntity implements Movable, Collidable {
     private int score;
     private double health;
 
-    private EndingStage endingStage;
+    private GameStage gameStage;
 
     // Score and health display
     // scoreMessage and healthMessage is mutable, so not set to final
@@ -73,7 +73,7 @@ public class Player extends GameEntity implements Movable, Collidable {
         this.setScore(INIT_SCORE);
         this.setHealth(Double.parseDouble(gameProps.getProperty("gameObjects.player.health")));
         this.lockJump = false;
-        this.endingStage = EndingStage.NOT_END;
+        this.gameStage = GameStage.PLAYING;
         entityImg = PLAYER_RIGHT;
     }
 
@@ -106,9 +106,9 @@ public class Player extends GameEntity implements Movable, Collidable {
 
             // Handling losing movement
             // Change state to finish losing when the player is out of the screen
-            if (this.endingStage == EndingStage.START_LOSING){
+            if (this.gameStage == GameStage.START_LOSING){
                 if (location.y > Window.getHeight()){
-                    this.endingStage = EndingStage.FINISH_LOSING;
+                    this.gameStage = GameStage.FINISH_LOSING;
                 }
             }
         }
@@ -133,7 +133,7 @@ public class Player extends GameEntity implements Movable, Collidable {
         // If yes, then change the endingStage and
         // set velocity to END_SPEED
         if (this.health <= 0){
-            this.endingStage = EndingStage.START_LOSING;
+            this.gameStage = GameStage.START_LOSING;
             this.lockJump = false; // Remove any jumping acceleration when dead
             this.velocity = END_SPEED;
         }
@@ -149,8 +149,8 @@ public class Player extends GameEntity implements Movable, Collidable {
         scoreMessage.setMessageStr(SCORE_INIT_MESSAGE + this.score);
     }
 
-    public EndingStage getEndingStage(){
-        return endingStage;
+    public GameStage getEndingStage(){
+        return gameStage;
     }
 
 
@@ -187,7 +187,7 @@ public class Player extends GameEntity implements Movable, Collidable {
             }
         } else if (entity instanceof EndFlag){
             // Set winning stage
-            this.endingStage = EndingStage.WINNING;
+            this.gameStage = GameStage.WINNING;
         }
     }
 

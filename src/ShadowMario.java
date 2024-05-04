@@ -1,7 +1,6 @@
 import GameEntity.*;
 import bagel.*;
 import bagel.util.Point;
-import enums.EndingStage;
 import enums.MoveDirection;
 import utils.IOUtils;
 import utils.Message;
@@ -63,7 +62,7 @@ public class ShadowMario extends AbstractGame {
         int windowWidth = Integer.parseInt(gameProps.getProperty("windowWidth"));
 
         BACKGROUND_IMAGE = new Image(gameProps.getProperty("backgroundImage"));
-        this.curStage = GameStage.START_SCREEN;
+        this.curStage = ShadowMario.GameStage.START_SCREEN;
 
         // Fonts and messages
         // All fonts
@@ -235,17 +234,17 @@ public class ShadowMario extends AbstractGame {
 
         // Change scene when space is pressed on start screen and end screen
         if (input.wasPressed(Keys.SPACE)){
-            if (curStage == GameStage.START_SCREEN){
-                curStage = GameStage.PLAYING;
-            } else if (curStage == GameStage.ENDING){
+            if (curStage == ShadowMario.GameStage.START_SCREEN){
+                curStage = ShadowMario.GameStage.PLAYING;
+            } else if (curStage == ShadowMario.GameStage.ENDING){
                 // Reset game stage and entities attributes
-                curStage = GameStage.START_SCREEN;
+                curStage = ShadowMario.GameStage.START_SCREEN;
                 resetAllEntities();
             }
         }
 
         // Only detect inputs and update location during PLAYING stage
-        if (curStage == GameStage.PLAYING) {
+        if (curStage == ShadowMario.GameStage.PLAYING) {
             // Moving entities
             // Update all GameEntity.Movable based on the keys pressed
             // Async input, so call as separate if
@@ -272,13 +271,13 @@ public class ShadowMario extends AbstractGame {
             collisionMediator.handleCollision();
 
             // Check if the game ends
-            if (player.getEndingStage() != EndingStage.NOT_END){
-                curStage = GameStage.ENDING;
+            if (player.getEndingStage() != enums.GameStage.PLAYING){
+                curStage = ShadowMario.GameStage.ENDING;
             }
         }
 
         // Continue the movement of the players downward if ending
-        if (curStage == GameStage.ENDING && player.getEndingStage() == EndingStage.START_LOSING){
+        if (curStage == ShadowMario.GameStage.ENDING && player.getEndingStage() == enums.GameStage.START_LOSING){
             player.updateLocation(MoveDirection.CONTINUE);
         }
 
@@ -286,7 +285,7 @@ public class ShadowMario extends AbstractGame {
         BACKGROUND_IMAGE.draw(Window.getWidth()/2.0, Window.getHeight()/2.0);
 
         // Display starting screen
-        if (curStage == GameStage.START_SCREEN){
+        if (curStage == ShadowMario.GameStage.START_SCREEN){
             TITLE_MESSAGE.draw();
             INSTRUCTION_MESSAGE.draw();
             return;
@@ -295,18 +294,18 @@ public class ShadowMario extends AbstractGame {
 
         // Playing and Ending stage
         // Draw all entities in playing stage
-        if (curStage == GameStage.PLAYING){
+        if (curStage == ShadowMario.GameStage.PLAYING){
             drawAllEntities();
             return;
         }
 
         // Handle ending stages
-        if (curStage == GameStage.ENDING){
-            if (player.getEndingStage() == EndingStage.WINNING){
+        if (curStage == ShadowMario.GameStage.ENDING){
+            if (player.getEndingStage() == enums.GameStage.WINNING){
                 WINNING_MESSAGE.draw();
-            } else if (player.getEndingStage() == EndingStage.FINISH_LOSING){
+            } else if (player.getEndingStage() == enums.GameStage.FINISH_LOSING){
                 LOSING_MESSAGE.draw();
-            } else if (player.getEndingStage() == EndingStage.START_LOSING){
+            } else if (player.getEndingStage() == enums.GameStage.START_LOSING){
                 // Still draw everything until the player disappears out of screen
                 drawAllEntities();
             }
