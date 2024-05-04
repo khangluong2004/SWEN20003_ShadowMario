@@ -1,0 +1,9 @@
+Sources for the resources in this project:
+
+Platform image modified using original artwork by Luis Zuno (@ansimuz)
+
+Enemy image created by Bonsaiheldin
+
+End flag image created by UEG Productions
+
+"8 bit revival" font created on 10.23.01 by Jeff George (inpheaux@skizzers.org)
