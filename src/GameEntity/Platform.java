@@ -1,3 +1,6 @@
+package GameEntity;
+
+import CollisionHandling.Collidable;
 import bagel.Image;
 import bagel.util.Point;
 import enums.MoveDirection;
@@ -6,7 +9,7 @@ import utils.DistanceUtils;
 import java.util.Properties;
 
 /**
- * Platform class for the platform objects.
+ * GameEntity.Platform class for the platform objects.
  * Stop player's falling velocity from jumping after collision
  */
 public class Platform extends GameEntity implements Collidable, Movable {

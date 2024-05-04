@@ -1,3 +1,5 @@
+package CollisionHandling;
+
 import bagel.util.Point;
 
 /**

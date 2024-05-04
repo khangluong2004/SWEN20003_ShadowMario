@@ -1,8 +1,10 @@
+import GameEntity.*;
 import bagel.*;
 import bagel.util.Point;
 import enums.EndingStage;
 import enums.MoveDirection;
 import utils.IOUtils;
+import utils.Message;
 
 import java.util.Properties;
 
@@ -245,7 +247,7 @@ public class ShadowMario extends AbstractGame {
         // Only detect inputs and update location during PLAYING stage
         if (curStage == GameStage.PLAYING) {
             // Moving entities
-            // Update all Movable based on the keys pressed
+            // Update all GameEntity.Movable based on the keys pressed
             // Async input, so call as separate if
             if (input.isDown(Keys.LEFT)) {
                 updateAllLocations(MoveDirection.LEFT);
@@ -263,7 +265,7 @@ public class ShadowMario extends AbstractGame {
                 updateAllLocations(MoveDirection.DOWN);
             }
 
-            // Call update with continue for objects with continuing velocity (eg: Player after jumping)
+            // Call update with continue for objects with continuing velocity (eg: GameEntity.Player after jumping)
             updateAllLocations(MoveDirection.CONTINUE);
 
             // Call the mediator to manage collision

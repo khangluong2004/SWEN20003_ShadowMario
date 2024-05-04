@@ -1,8 +1,10 @@
+package utils;
+
 import bagel.Font;
 import bagel.util.Point;
 
 /**
- * Message class for message objects
+ * utils.Message class for message objects
  * to handle drawing font at specified locations
  */
 public class Message {

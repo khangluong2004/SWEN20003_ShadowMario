@@ -1,3 +1,5 @@
+package GameEntity;
+
 import enums.MoveDirection;
 
 /**

@@ -1,7 +1,10 @@
+package GameEntity;
+
 import bagel.Image;
 import bagel.util.Point;
 import enums.MoveDirection;
 import utils.DistanceUtils;
+import CollisionHandling.Collidable;
 
 /**
  * Base abstract class for entities that are movable and collidable, with collision detected by

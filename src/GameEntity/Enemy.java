@@ -1,10 +1,13 @@
+package GameEntity;
+
+import CollisionHandling.Collidable;
 import bagel.Image;
 import bagel.util.Point;
 
 import java.util.Properties;
 
 /**
- * Class for enemy entity, inherits from EuclideanCollidableMovableEntity,
+ * Class for enemy entity, inherits from GameEntity.EuclideanCollidableMovableEntity,
  * with overidden collision handling methods and reset attributes
  */
 public class Enemy extends EuclideanCollidableMovableEntity {

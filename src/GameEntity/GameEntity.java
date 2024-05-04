@@ -1,3 +1,5 @@
+package GameEntity;
+
 import bagel.Image;
 import bagel.util.Point;
 
@@ -20,19 +22,19 @@ public abstract class GameEntity {
         this.location = location;
     }
 
-    void draw(){
+    public void draw(){
         entityImg.draw(location.x, location.y);
     }
 
-    Point getLocation(){
+    public Point getLocation(){
         return location;
     }
 
-    double getHeight(){
+    public double getHeight(){
         return entityImg.getHeight();
     }
 
-    double getWidth(){
+    public double getWidth(){
         return  entityImg.getWidth();
     }
 
@@ -40,7 +42,7 @@ public abstract class GameEntity {
      * Reset attributes when game restarts
      * @param gameProps
      */
-    void resetAttributes(Properties gameProps){
+    public void resetAttributes(Properties gameProps){
         this.location = INIT_LOCATION;
     }
 }

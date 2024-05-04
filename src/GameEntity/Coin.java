@@ -1,3 +1,6 @@
+package GameEntity;
+
+import CollisionHandling.Collidable;
 import bagel.Image;
 import bagel.util.Point;
 import enums.MoveDirection;
@@ -5,8 +8,8 @@ import enums.MoveDirection;
 import java.util.Properties;
 
 /**
- * Class for the Coin entities, inheriting from the base
- * class EuclideanCollidableMovableEntity (since the coin
+ * Class for the GameEntity.Coin entities, inheriting from the base
+ * class GameEntity.EuclideanCollidableMovableEntity (since the coin
  * can move and detect collision by Euclidean distance)
  */
 public class Coin extends EuclideanCollidableMovableEntity {

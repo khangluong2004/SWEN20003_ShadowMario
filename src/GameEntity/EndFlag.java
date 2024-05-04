@@ -1,10 +1,13 @@
+package GameEntity;
+
+import CollisionHandling.Collidable;
 import bagel.Image;
 import bagel.util.Point;
 
 import java.util.Properties;
 
 /**
- * Class for EndFlag inheriting from EuclideanCollidableMovableEntity
+ * Class for GameEntity.EndFlag inheriting from GameEntity.EuclideanCollidableMovableEntity
  */
 public class EndFlag extends EuclideanCollidableMovableEntity {
 
