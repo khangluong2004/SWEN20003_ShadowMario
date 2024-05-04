@@ -1,8 +1,8 @@
 Sources for the resources in this project:
 
-GameEntity.Platform image modified using original artwork by Luis Zuno (@ansimuz)
+Platform image modified using original artwork by Luis Zuno (@ansimuz)
 
-GameEntity.Enemy image created by Bonsaiheldin
+Enemy image created by Bonsaiheldin
 
 End flag image created by UEG Productions
 

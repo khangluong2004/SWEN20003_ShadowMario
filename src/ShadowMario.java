@@ -86,7 +86,7 @@ public class ShadowMario extends AbstractGame {
         int otherEntitiesCount = 0;
 
 
-        String[][] worldInfo = IOUtils.readCsv(gameProps.getProperty("levelFile"));
+        String[][] worldInfo = IOUtils.readCsv(gameProps.getProperty("level1File"));
 
         // Iterate through the array
         for (int i=0; i < MAX_ENTITIES; i++){

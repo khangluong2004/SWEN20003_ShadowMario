@@ -59,10 +59,10 @@ public class Player extends GameEntity implements Movable, Collidable {
         scoreMessage = new Message(SCORE_INIT_MESSAGE + this.score, new Point(Double.parseDouble(gameProps.getProperty("score.x")),
                 Double.parseDouble(gameProps.getProperty("score.y"))), scoreFont, false);
 
-        Font healthFont = new Font(gameProps.getProperty("font"), Integer.parseInt(gameProps.getProperty("health.fontSize")));
+        Font healthFont = new Font(gameProps.getProperty("font"), Integer.parseInt(gameProps.getProperty("playerHealth.fontSize")));
         HEALTH_INIT_MESSAGE = messageProps.getProperty("health");
-        healthMessage = new Message(HEALTH_INIT_MESSAGE + this.health, new Point(Double.parseDouble(gameProps.getProperty("health.x")),
-                Double.parseDouble(gameProps.getProperty("health.y"))), healthFont, false);
+        healthMessage = new Message(HEALTH_INIT_MESSAGE + this.health, new Point(Double.parseDouble(gameProps.getProperty("playerHealth.x")),
+                Double.parseDouble(gameProps.getProperty("playerHealth.y"))), healthFont, false);
 
         this.resetAttributes(gameProps);
     }
