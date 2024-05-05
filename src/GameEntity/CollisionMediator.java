@@ -1,7 +1,5 @@
 package GameEntity;
 
-import CollisionHandling.Collidable;
-
 /**
  * The mediator class to control the collision between entities
  */
@@ -64,10 +62,10 @@ public class CollisionMediator {
             }
 
             if (checkCollide(distanceSquared, range)){
-                collidableEntity.collideWith(PLAYER);
-                PLAYER.collideWith(collidableEntity);
-                collidableEntity.finishColliding(PLAYER);
-                PLAYER.collideWith(collidableEntity);
+                collidableEntity.startCollideWith(PLAYER);
+                PLAYER.startCollideWith(collidableEntity);
+                collidableEntity.endCollideWith(PLAYER);
+                PLAYER.startCollideWith(collidableEntity);
             }
         }
     }

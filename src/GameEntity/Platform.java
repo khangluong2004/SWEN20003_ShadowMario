@@ -1,6 +1,5 @@
 package GameEntity;
 
-import CollisionHandling.Collidable;
 import bagel.Image;
 import bagel.util.Point;
 import enums.MoveDirection;
@@ -44,7 +43,7 @@ public class Platform extends GameEntity implements Collidable, Movable {
         return newX;
     }
 
-    public void updateLocation(MoveDirection direction){
+    public void move(MoveDirection direction){
         double change = 0;
         if (direction == MoveDirection.LEFT){
             change = STEP_SIZE;
@@ -55,10 +54,10 @@ public class Platform extends GameEntity implements Collidable, Movable {
         this.location = new Point(updateX(location.x, change), location.y);
     }
 
-    public void collideWith(Collidable entity){}
+    public void startCollideWith(Collidable entity){}
 
     @Override
-    public void finishColliding(Collidable entity) {}
+    public void endCollideWith(Collidable entity) {}
 
     @Override
     public double getRadius() {

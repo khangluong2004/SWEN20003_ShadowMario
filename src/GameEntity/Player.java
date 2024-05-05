@@ -1,6 +1,5 @@
 package GameEntity;
 
-import CollisionHandling.Collidable;
 import bagel.Font;
 import bagel.Image;
 import bagel.Window;
@@ -91,7 +90,7 @@ public class Player extends GameEntity implements Movable, Collidable {
         lockJump = true;
     }
 
-    public void updateLocation(MoveDirection direction){
+    public void move(MoveDirection direction){
         if (direction == MoveDirection.UP){
             this.jump();
         } else if (direction == MoveDirection.LEFT){
@@ -155,7 +154,7 @@ public class Player extends GameEntity implements Movable, Collidable {
 
 
     @Override
-    public void collideWith(Collidable entity) {
+    public void startCollideWith(Collidable entity) {
         if (entity instanceof Enemy){
             // Down cast enemy and get the damage value
             // then change health (if first time collided)
@@ -192,7 +191,7 @@ public class Player extends GameEntity implements Movable, Collidable {
     }
 
     @Override
-    public void finishColliding(Collidable entity) {}
+    public void endCollideWith(Collidable entity) {}
 
     @Override
     public double getRadius() {

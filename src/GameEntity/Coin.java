@@ -1,9 +1,9 @@
 package GameEntity;
 
-import CollisionHandling.Collidable;
 import bagel.Image;
 import bagel.util.Point;
 import enums.MoveDirection;
+import utils.DistanceUtils;
 
 import java.util.Properties;
 
@@ -12,10 +12,12 @@ import java.util.Properties;
  * class GameEntity.EuclideanCollidableMovableEntity (since the coin
  * can move and detect collision by Euclidean distance)
  */
-public class Coin extends EuclideanCollidableMovableEntity {
+public class Coin extends GameEntity implements Collidable {
     private final static int POPPING_SPEED = -10;
     private final static int INITAL_VERTICAL_SPEED = 0;
     private final int COIN_VALUE;
+    private int STEP_SIZE;
+    private int radius;
     private int verticalVelocity;
     private boolean isPlayerCollided; // Check if collided with the player
 
@@ -25,11 +27,7 @@ public class Coin extends EuclideanCollidableMovableEntity {
      * @param game_props Props read from app.properties
      */
     public Coin(Point location, Properties game_props){
-        super(location,
-                Double.parseDouble(game_props.getProperty("gameObjects.coin.radius")),
-                Integer.parseInt(game_props.getProperty("gameObjects.coin.speed")),
-                new Image(game_props.getProperty("gameObjects.coin.image"))
-        );
+        super(new Image(game_props.getProperty("gameObjects.coin.image")), location);
         COIN_VALUE = Integer.parseInt(game_props.getProperty("gameObjects.coin.value"));
         this.resetAttributes(game_props);
     }
@@ -56,7 +54,7 @@ public class Coin extends EuclideanCollidableMovableEntity {
 
 
     @Override
-    public void collideWith(Collidable entity) {}
+    public void startCollideWith(Collidable entity) {}
 
     /**
      * Override the behaviour after collision with player.
@@ -65,7 +63,7 @@ public class Coin extends EuclideanCollidableMovableEntity {
      * @param entity The entity this coin collided with
      */
     @Override
-    public void finishColliding(Collidable entity) {
+    public void endCollideWith(Collidable entity) {
         if (entity instanceof Player){
             // Do nothing if collided with the player before
             if (isPlayerCollided){
@@ -80,18 +78,43 @@ public class Coin extends EuclideanCollidableMovableEntity {
         }
     }
 
+    /**
+     * Get the collision radius of the object
+     * @return the radius of the object
+     */
+    @Override
+    public double getRadius() {
+        return radius;
+    }
+
+    /**
+     * Calculate the distance between this entity and another entity using Euclidean distance
+     * @param location2
+     * @return the distance squared
+     */
+    @Override
+    public double calcDistanceSquared(Point location2) {
+        return DistanceUtils.calcEuclideanDistanceSquared(this.location, location2);
+    }
 
     /**
      * Update the location of the coin after the user pressed a key
      * or to continue the popping out movement
      * @param direction The direction of user's key pressed or signal to continue movement
      */
-    @Override
+
     public void updateLocation(MoveDirection direction){
-        super.updateLocation(direction);
+        if (direction == MoveDirection.LEFT){
+            this.location = new Point(location.x + STEP_SIZE, location.y);
+        } else if (direction == MoveDirection.RIGHT){
+            this.location = new Point(location.x - STEP_SIZE, location.y);
+        }
+
         if (direction == MoveDirection.CONTINUE){
             Point location = this.getLocation();
             this.location = new Point(location.x, location.y + verticalVelocity);
         }
     }
+
+
 }

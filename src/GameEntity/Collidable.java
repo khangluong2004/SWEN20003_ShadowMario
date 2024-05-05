@@ -1,4 +1,4 @@
-package CollisionHandling;
+package GameEntity;
 
 import bagel.util.Point;
 
@@ -12,13 +12,11 @@ public interface Collidable {
      * at the start of the collision
      * @param entity the entity that is collided with
      */
-    public void collideWith(Collidable entity);
+    void startCollideWith(Collidable entity);
 
     /**
      * Method to create any effects after the collision, when all "collideWith" effects are processed
      * @param entity the entity that is collided with
      */
-    public void finishColliding(Collidable entity);
-    public double getRadius();
-    public double calcDistanceSquared(Point location2);
+    void endCollideWith(Collidable entity);
 }

@@ -3,6 +3,8 @@ package GameEntity;
 import bagel.Image;
 import bagel.util.Point;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -11,19 +13,21 @@ import java.util.Properties;
  * and reset attributes method (to replay games)
  */
 public abstract class GameEntity {
-    // Store the initial location for resetting attributes during restarting
-    private final Point INIT_LOCATION;
-    protected Image entityImg;
+    protected List<Image> entityImages;
+    protected int currentImageIndex;
     protected Point location;
+    protected boolean isDeleted;
 
-    public GameEntity(Image entityImg, Point location){
-        this.entityImg = entityImg;
-        this.INIT_LOCATION = location;
+    public GameEntity(List<Image> entityImages, int currentImageIndex, Point location){
+        this.entityImages = entityImages;
+        this.currentImageIndex = currentImageIndex;
+
         this.location = location;
+        this.isDeleted = false;
     }
 
     public void draw(){
-        entityImg.draw(location.x, location.y);
+        entityImages.get(currentImageIndex).draw(location.x, location.y);
     }
 
     public Point getLocation(){
@@ -31,18 +35,11 @@ public abstract class GameEntity {
     }
 
     public double getHeight(){
-        return entityImg.getHeight();
+        return entityImages.get(currentImageIndex).getHeight();
     }
 
     public double getWidth(){
-        return  entityImg.getWidth();
+        return entityImages.get(currentImageIndex).getWidth();
     }
 
-    /**
-     * Reset attributes when game restarts
-     * @param gameProps
-     */
-    public void resetAttributes(Properties gameProps){
-        this.location = INIT_LOCATION;
-    }
 }
