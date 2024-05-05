@@ -32,7 +32,7 @@ public class FireBall extends GameEntity implements Movable, Attacker, RadiusCol
         this.firer = firer;
 
         this.entityImages.add(new Image(gameProps.getProperty("gameObjects.fireball.image")));
-        this.DAMAGE_SIZE = Double.parseDouble(gameProps.getProperty("gameObjects.fireball.damageSize"));
+        this.DAMAGE_SIZE = -1 * Double.parseDouble(gameProps.getProperty("gameObjects.fireball.damageSize"));
         this.RADIUS = Double.parseDouble(gameProps.getProperty("gameObjects.fireball.radius"));
         this.FIRE_STEP_SIZE = Integer.parseInt(gameProps.getProperty("gameObjects.fireball.speed"));
         this.STEP_SIZE = Integer.parseInt(gameProps.getProperty("gameObjects.coin.speed"));
