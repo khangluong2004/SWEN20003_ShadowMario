@@ -117,8 +117,8 @@ public class Player extends GameEntity implements Movable, Collidable {
 
     public void draw(){
         super.draw();
-        scoreMessage.draw();
-        healthMessage.draw();
+        scoreMessage.write();
+        healthMessage.write();
     }
 
     public double getHealth(){
@@ -127,7 +127,7 @@ public class Player extends GameEntity implements Movable, Collidable {
 
     private void setHealth(double health){
         this.health = Math.max(0, health);
-        healthMessage.setMessageStr(HEALTH_INIT_MESSAGE + PercentageUtils.toPercentage(this.health));
+        healthMessage.setMessageContent(HEALTH_INIT_MESSAGE + PercentageUtils.toPercentage(this.health));
 
         // Check if the player lost
         // If yes, then change the endingStage and
@@ -146,7 +146,7 @@ public class Player extends GameEntity implements Movable, Collidable {
 
     private void setScore(int score){
         this.score = score;
-        scoreMessage.setMessageStr(SCORE_INIT_MESSAGE + this.score);
+        scoreMessage.setMessageContent(SCORE_INIT_MESSAGE + this.score);
     }
 
     public GameStage getEndingStage(){

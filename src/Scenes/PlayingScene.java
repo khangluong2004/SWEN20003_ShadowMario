@@ -1,14 +1,22 @@
 package Scenes;
 
+import GameEntity.*;
 import bagel.Input;
+import bagel.util.Point;
 import enums.GameStage;
+import utils.IOUtils;
 
 public class PlayingScene implements Scene{
     private GameStage gameStage;
 
+    public PlayingScene(){
+        return;
+
+    }
+
     public PlayingScene(int curLevel){}
-    @Override
-    public void loadScene(int currentLevel) {
+
+    protected void loadScene(int currentLevel) {
 
     }
 

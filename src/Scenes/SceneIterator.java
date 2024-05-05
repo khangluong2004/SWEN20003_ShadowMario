@@ -17,10 +17,10 @@ public class SceneIterator {
 
     /***
      * Handling switching scenes with Iterator pattern
-     * @param input
+     * @param
      * @return
      */
-    public Scene nextScene(Input input){
+    public Scene nextScene(){
         // If the scene hasn't ended, change nothing
         if (!currentScene.isEnd()){
             return currentScene;
@@ -29,7 +29,7 @@ public class SceneIterator {
         // Else, move to the corresponding next scene
         if (currentScene instanceof IntroductionScene){
             IntroductionScene currentScene = (IntroductionScene) this.currentScene;
-            int curLevel = currentScene.getNextLevel(input);
+            int curLevel = currentScene.getNextLevel();
             this.currentScene = new PlayingScene(curLevel);
         } else if (currentScene instanceof PlayingScene){
             PlayingScene currentScene = (PlayingScene) this.currentScene;

@@ -27,11 +27,11 @@ public class Message {
         }
     }
 
-    public void draw(){
+    public void write(){
         FONT.drawString(messageStr, location.x, location.y);
     }
 
-    public void setMessageStr(String newMessageStr){
+    public void setMessageContent(String newMessageStr){
         messageStr = newMessageStr;
     }
 }
