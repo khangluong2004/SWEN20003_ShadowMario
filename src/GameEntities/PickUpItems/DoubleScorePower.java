@@ -1,11 +1,10 @@
-package GameEntity.PickUpItems;
+package GameEntities.PickUpItems;
 
 import GameProperties.GameProps;
 import bagel.Image;
 import bagel.util.Point;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 public class DoubleScorePower extends PickupItem{

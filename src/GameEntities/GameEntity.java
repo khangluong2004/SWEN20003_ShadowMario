@@ -1,12 +1,10 @@
-package GameEntity;
+package GameEntities;
 
 import Scenes.Scene;
 import bagel.Image;
 import bagel.util.Point;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * The abstract class that all game entities should inherit,
@@ -29,6 +27,9 @@ public abstract class GameEntity {
     }
 
     public void draw(){
+        if (isDeleted){
+            return;
+        }
         entityImages.get(currentImageIndex).draw(location.x, location.y);
     }
 
@@ -42,6 +43,10 @@ public abstract class GameEntity {
 
     public double getWidth(){
         return entityImages.get(currentImageIndex).getWidth();
+    }
+
+    public boolean isDeleted(){
+        return isDeleted;
     }
 
 }

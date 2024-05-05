@@ -1,4 +1,4 @@
-package GameEntity.Characters;
+package GameEntities.Characters;
 
 public interface Killable {
     boolean isDead();

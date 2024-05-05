@@ -1,8 +1,8 @@
-package GameEntity.Platforms;
+package GameEntities.Platforms;
 
-import GameEntity.GameEntity;
-import GameEntity.CollisionInterface.Collidable;
-import GameEntity.Movable;
+import GameEntities.GameEntity;
+import GameEntities.CollisionInterface.Collidable;
+import GameEntities.Movable;
 
 import GameProperties.GameProps;
 import bagel.Image;

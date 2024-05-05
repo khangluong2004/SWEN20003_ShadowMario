@@ -1,4 +1,4 @@
-package GameEntity.CollisionInterface;
+package GameEntities.CollisionInterface;
 
 /**
  * Interface for entities that can collide with other entities,

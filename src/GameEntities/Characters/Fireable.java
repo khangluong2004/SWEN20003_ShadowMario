@@ -1,6 +1,6 @@
-package GameEntity.Characters;
+package GameEntities.Characters;
 
-import GameEntity.GameEntity;
+import GameEntities.GameEntity;
 
 public interface Fireable {
     void fire();

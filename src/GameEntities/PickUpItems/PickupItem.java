@@ -1,15 +1,14 @@
-package GameEntity.PickUpItems;
+package GameEntities.PickUpItems;
 
-import GameEntity.Characters.Player;
-import GameEntity.CollisionInterface.Collidable;
-import GameEntity.GameEntity;
-import GameEntity.CollisionInterface.RadiusCollidable;
-import GameEntity.Movable;
+import GameEntities.Characters.Player;
+import GameEntities.CollisionInterface.Collidable;
+import GameEntities.GameEntity;
+import GameEntities.CollisionInterface.RadiusCollidable;
+import GameEntities.Movable;
 
 import bagel.Image;
 import bagel.util.Point;
 import enums.MoveDirection;
-import utils.DistanceUtils;
 
 import java.util.List;
 

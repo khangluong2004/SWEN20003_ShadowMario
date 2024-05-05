@@ -1,6 +1,5 @@
-package GameEntity.PickUpItems;
+package GameEntities.PickUpItems;
 
-import GameEntity.PickUpItems.PickupItem;
 import GameProperties.GameProps;
 import bagel.Image;
 import bagel.util.Point;

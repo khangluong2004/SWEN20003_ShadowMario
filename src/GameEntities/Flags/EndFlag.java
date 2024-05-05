@@ -1,9 +1,12 @@
-package GameEntity.Flags;
+package GameEntities.Flags;
 
-import GameEntity.CollisionInterface.Collidable;
-import GameEntity.CollisionInterface.RadiusCollidable;
-import GameEntity.GameEntity;
+import GameEntities.CollisionInterface.Collidable;
+import GameEntities.CollisionInterface.RadiusCollidable;
+import GameEntities.GameEntity;
+import GameEntities.Movable;
+
 import GameProperties.GameProps;
+
 import bagel.Image;
 import bagel.util.Point;
 import enums.MoveDirection;

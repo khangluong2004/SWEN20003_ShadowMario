@@ -1,6 +1,6 @@
-package GameEntity.Attackers;
+package GameEntities.Attackers;
 
-import GameEntity.GameEntity;
+import GameEntities.GameEntity;
 
 public interface Attacker {
     double getDamage(GameEntity entity);

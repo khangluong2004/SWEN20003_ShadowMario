@@ -1,8 +1,8 @@
-package GameEntity.Characters;
+package GameEntities.Characters;
 
-import GameEntity.GameEntity;
-import GameEntity.PickUpItems.Coin;
-import GameEntity.Platforms.Platform;
+import GameEntities.GameEntity;
+import GameEntities.PickUpItems.Coin;
+import GameEntities.Platforms.Platform;
 import bagel.Font;
 import bagel.Image;
 import bagel.Window;

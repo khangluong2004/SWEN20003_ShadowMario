@@ -1,13 +1,8 @@
-import GameEntity.*;
 import GameProperties.GameProps;
 import GameProperties.MessageProps;
 import Scenes.Scene;
 import Scenes.SceneIterator;
 import bagel.*;
-import bagel.util.Point;
-import enums.MoveDirection;
-import utils.IOUtils;
-import utils.Message;
 
 import java.util.Properties;
 

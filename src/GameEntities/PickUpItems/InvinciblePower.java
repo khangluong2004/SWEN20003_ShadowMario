@@ -1,4 +1,4 @@
-package GameEntity.PickUpItems;
+package GameEntities.PickUpItems;
 
 import GameProperties.GameProps;
 import bagel.Image;

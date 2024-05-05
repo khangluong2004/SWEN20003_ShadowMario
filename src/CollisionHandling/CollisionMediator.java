@@ -1,7 +1,7 @@
 package CollisionHandling;
 
-import GameEntity.GameEntity;
-import GameEntity.Characters.Player;
+import GameEntities.GameEntity;
+import GameEntities.Characters.Player;
 
 /**
  * The mediator class to control the collision between entities
