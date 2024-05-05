@@ -1,30 +1,79 @@
 package GameEntity;
 
+import GameProperties.GameProps;
 import bagel.Image;
 import bagel.util.Point;
 import enums.MoveDirection;
-import utils.DistanceUtils;
 
+import java.util.ArrayList;
 import java.util.Properties;
+import java.util.Random;
 
 /**
  * Class for enemy entity, inherits from GameEntity.EuclideanCollidableMovableEntity,
  * with overidden collision handling methods and reset attributes
  */
-public class Enemy extends GameEntity implements Collidable{
-    private int RADIUS;
-    private int STEP_SIZE;
-    private final double damageSize;
+public class Enemy extends GameEntity implements RadiusCollidable, Movable, Attacker{
+    private final double RADIUS;
+    private final int STEP_SIZE;
+    private final int RANDOM_STEP_SIZE;
+    private final int FRAMES_UNTIL_CHANGE_DIRECTION;
+    private final double DAMAGE_SIZE;
     private boolean inflictedDamage;
+    // Negative velocity is to the left, positive is to the right
+    private int velocity;
+    private int frameSinceLastChangeDirection;
 
-    public Enemy(Point location, Properties game_props){
-        super(new Image(game_props.getProperty("gameObjects.enemy.image")), location);
-        damageSize = -1 * Double.parseDouble(game_props.getProperty("gameObjects.enemy.damageSize"));
+    public Enemy(Point location){
+        super(new ArrayList<Image>(), 0, location);
+        Properties gameProps = GameProps.getGameProps();
+
+        this.DAMAGE_SIZE = -1 * Double.parseDouble(gameProps.getProperty("gameObjects.enemy.damageSize"));
+        this.RADIUS = Double.parseDouble(gameProps.getProperty("gameObjects.enemy.radius"));
+        this.STEP_SIZE = Integer.parseInt(gameProps.getProperty("gameObjects.enemy.speed"));
+        this.RANDOM_STEP_SIZE = Integer.parseInt(gameProps.getProperty("gameObjects.enemy.randomSpeed"));
+        this.FRAMES_UNTIL_CHANGE_DIRECTION = Integer.parseInt(gameProps.getProperty("gameObjects.enemy.maxRandomDisplacementX")) / this.RANDOM_STEP_SIZE;
+
+        this.entityImages.add(new Image(gameProps.getProperty("gameObjects.enemy.image")));
         this.inflictedDamage = false;
+        this.updateDirection();
     }
 
-    public double getDamageSize(){
-        return damageSize;
+    /**
+     * Common updateLocation for LEFT/RIGHT movements for all movable objects
+     * @param direction the direction from the key pressed by the user
+     */
+    @Override
+    public void move(MoveDirection direction) {
+        if (direction == MoveDirection.LEFT){
+            this.location = new Point(location.x + STEP_SIZE, location.y);
+        } else if (direction == MoveDirection.RIGHT){
+            this.location = new Point(location.x - STEP_SIZE, location.y);
+        } else if (direction == MoveDirection.CONTINUE){
+            this.frameSinceLastChangeDirection++;
+            if (this.frameSinceLastChangeDirection >= FRAMES_UNTIL_CHANGE_DIRECTION){
+                this.updateDirection();
+                this.frameSinceLastChangeDirection = 0;
+            }
+
+            this.location = new Point(location.x + velocity, location.y);
+        }
+    }
+
+    private void updateDirection(){
+        Random random = new Random();
+        int randomDirection = random.nextInt(1, 3);
+        if (randomDirection == 1){
+            // Move left
+            velocity = -1 * RANDOM_STEP_SIZE;
+        } else {
+            velocity = RANDOM_STEP_SIZE;
+        }
+    }
+
+    @Override
+    public double getDamage(GameEntity entity){
+        return DAMAGE_SIZE;
     }
 
     public boolean isInflictedDamage(){
@@ -55,31 +104,7 @@ public class Enemy extends GameEntity implements Collidable{
      * @return the radius of the object
      */
     @Override
-    public double getRadius() {
+    public double getCollisionRadius(Collidable entity) {
         return RADIUS;
-    }
-
-    /**
-     * Calculate the distance between this entity and another entity using Euclidean distance
-     * @param location2
-     * @return the distance squared
-     */
-    @Override
-    public double calcDistanceSquared(Point location2) {
-        return DistanceUtils.calcEuclideanDistanceSquared(this.location, location2);
-    }
-
-
-    /**
-     * Common updateLocation for LEFT/RIGHT movements for all movable objects
-     * @param direction the direction from the key pressed by the user
-     */
-
-    public void updateLocation(MoveDirection direction) {
-        if (direction == MoveDirection.LEFT){
-            this.location = new Point(location.x + STEP_SIZE, location.y);
-        } else if (direction == MoveDirection.RIGHT){
-            this.location = new Point(location.x - STEP_SIZE, location.y);
-        }
     }
 }
