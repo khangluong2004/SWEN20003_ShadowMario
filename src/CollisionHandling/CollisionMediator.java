@@ -1,14 +1,14 @@
 package CollisionHandling;
 
 import GameEntity.GameEntity;
-import GameEntity.Player;
+import GameEntity.Characters.Player;
 
 /**
  * The mediator class to control the collision between entities
  */
 public class CollisionMediator {
     // References of all entities
-    // GameEntity.Player is a special one, since all effect is derived
+    // GameEntity.Characters.Player is a special one, since all effect is derived
     // from the player collided with other entities.
 
     // Keeping player as a separate entity to ensure an O(n)
@@ -59,7 +59,7 @@ public class CollisionMediator {
             double distanceSquared = collidableEntity.calcDistanceSquared(PLAYER.getLocation());
             double range = PLAYER.getRadius() + collidableEntity.getRadius();
 
-            // Range is different for the GameEntity.Platform, which only considers the platform radius
+            // Range is different for the GameEntity.Platforms.Platform, which only considers the platform radius
             if (collidableEntity instanceof Platform){
                 range = collidableEntity.getRadius();
             }

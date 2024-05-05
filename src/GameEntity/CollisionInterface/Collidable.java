@@ -1,6 +1,4 @@
-package GameEntity;
-
-import bagel.util.Point;
+package GameEntity.CollisionInterface;
 
 /**
  * Interface for entities that can collide with other entities,

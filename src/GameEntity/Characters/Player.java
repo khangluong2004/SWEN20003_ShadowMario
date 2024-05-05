@@ -1,5 +1,8 @@
-package GameEntity;
+package GameEntity.Characters;
 
+import GameEntity.GameEntity;
+import GameEntity.PickUpItems.Coin;
+import GameEntity.Platforms.Platform;
 import bagel.Font;
 import bagel.Image;
 import bagel.Window;
@@ -13,10 +16,10 @@ import utils.PercentageUtils;
 import java.util.Properties;
 
 /**
- * GameEntity.Player class, handling the changing image when the player is moving
+ * GameEntity.Characters.Player class, handling the changing image when the player is moving
  * left or right, jumping motion, losing motion and the score/ health display.
  * Collision side-effects, as explained in GameEntity.Movable interface, is handled by the different
- * entities that collide with GameEntity.Player (and not the GameEntity.Player itself), ensuring Open-Closed Principle (I hope)
+ * entities that collide with GameEntity.Characters.Player (and not the GameEntity.Characters.Player itself), ensuring Open-Closed Principle (I hope)
  */
 public class Player extends GameEntity implements Movable, Collidable {
     // Images and constants
@@ -29,7 +32,7 @@ public class Player extends GameEntity implements Movable, Collidable {
     private final Image PLAYER_LEFT;
     private final Image PLAYER_RIGHT;
 
-    // GameEntity.Player properties
+    // GameEntity.Characters.Player properties
     private boolean lockJump;
     private final double RADIUS;
     // Vertical velocity

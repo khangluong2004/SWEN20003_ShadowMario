@@ -1,19 +1,20 @@
-package GameEntity;
+package GameEntity.Flags;
 
+import GameEntity.CollisionInterface.Collidable;
+import GameEntity.CollisionInterface.RadiusCollidable;
+import GameEntity.GameEntity;
 import GameProperties.GameProps;
 import bagel.Image;
 import bagel.util.Point;
 import enums.MoveDirection;
-import utils.DistanceUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 /**
- * Class for GameEntity.EndFlag inheriting from GameEntity.EuclideanCollidableMovableEntity
+ * Class for GameEntity.Flags.EndFlag inheriting from GameEntity.EuclideanCollidableMovableEntity
  */
-public class EndFlag extends GameEntity implements RadiusCollidable, Movable{
+public class EndFlag extends GameEntity implements RadiusCollidable, Movable {
     private final double RADIUS;
     private final int STEP_SIZE;
 
