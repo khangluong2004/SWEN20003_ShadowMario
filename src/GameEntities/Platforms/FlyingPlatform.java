@@ -57,8 +57,8 @@ public class FlyingPlatform extends GameEntity implements Movable, Collidable {
 
     private void updateDirection(){
         Random random = new Random();
-        int randomDirection = random.nextInt(1, 3);
-        if (randomDirection == 1){
+        boolean toLeft = random.nextBoolean();
+        if (toLeft){
             // Move left
             velocity = -1 * RANDOM_STEP_SIZE;
         } else {
