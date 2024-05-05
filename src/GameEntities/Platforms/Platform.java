@@ -20,6 +20,7 @@ public class Platform extends GameEntity implements Collidable, Movable {
     private static final int LEFT_MIN = 3000;
     private final double STEP_SIZE;
     // The offset pixel to make the player appears slightly above the platform
+    private final int OFFSET_PIXELS = 8;
 
 
     public Platform(Point location){
@@ -28,6 +29,10 @@ public class Platform extends GameEntity implements Collidable, Movable {
         Properties gameProps = GameProps.getGameProps();
         this.entityImages.add(new Image(gameProps.getProperty("gameObjects.platform.image")));
         this.STEP_SIZE = Integer.parseInt(gameProps.getProperty("gameObjects.platform.speed"));
+    }
+
+    public int getOffsetPixels(){
+        return OFFSET_PIXELS;
     }
 
     /**
