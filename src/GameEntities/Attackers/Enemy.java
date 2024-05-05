@@ -69,8 +69,8 @@ public class Enemy extends GameEntity implements RadiusCollidable, Movable, Atta
 
     private void updateDirection(){
         Random random = new Random();
-        int randomDirection = random.nextInt(1, 3);
-        if (randomDirection == 1){
+        boolean toLeft = random.nextBoolean();
+        if (toLeft){
             // Move left
             velocity = -1 * RANDOM_STEP_SIZE;
         } else {
@@ -101,6 +101,12 @@ public class Enemy extends GameEntity implements RadiusCollidable, Movable, Atta
     @Override
     public void endCollideWith(Collidable entity) {
         if (!this.inflictedDamage && entity instanceof Player){
+            // Check if the player is damageable. If not, then don't set the inflictedDamage flag
+            Player player = (Player) entity;
+            if (!player.isDamageable()){
+                return;
+            }
+
             // Set flag so not to inflict damage twice
             this.inflictedDamage = true;
         }
