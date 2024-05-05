@@ -7,6 +7,8 @@ import GameEntities.Characters.Player;
  * The mediator class to control the collision between entities
  */
 public class CollisionMediator {
+    // TODO: Adapt to the new designed CollisionMediator
+
     // References of all entities
     // GameEntity.Characters.Player is a special one, since all effect is derived
     // from the player collided with other entities.

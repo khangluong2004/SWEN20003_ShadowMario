@@ -89,6 +89,8 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         this.health = Math.max(0, newHealth);
         if (this.health <= 0){
             this.gameStage = GameStage.START_LOSING;
+            this.lockJump = false; // Remove any jumping acceleration when dead
+            this.velocity = DIE_SPEED;
         }
     }
 
