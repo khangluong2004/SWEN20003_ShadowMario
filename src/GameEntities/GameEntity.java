@@ -33,6 +33,10 @@ public abstract class GameEntity {
         entityImages.get(currentImageIndex).draw(location.x, location.y);
     }
 
+    // Used if the entity needs to update any attributes per frame
+    // Is called first before any actions
+    public void updatePerFrame(){}
+
     public Point getLocation(){
         return location;
     }
