@@ -1,19 +1,17 @@
 package Scenes;
 
 import bagel.Input;
-import bagel.Keys;
 import enums.GameStage;
 
 import java.util.Properties;
 
+/***
+ * Scene iterator: Handling the switching scenes
+ */
 public class SceneIterator {
-    private Properties gameProps;
-    private Properties messageProps;
     private Scene currentScene;
 
-    public SceneIterator(Properties gameProps, Properties messageProps){
-        this.gameProps = gameProps;
-        this.messageProps = messageProps;
+    public SceneIterator(){
         this.currentScene = new IntroductionScene();
     }
 
