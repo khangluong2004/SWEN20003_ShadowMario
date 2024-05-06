@@ -2,10 +2,11 @@ package CollisionHandling;
 
 import GameEntities.Characters.Player;
 import GameEntities.CollisionInterface.Collidable;
-import GameEntities.CollisionInterface.RadiusCollidable;
-import GameEntities.GameEntity;
 import GameEntities.Platforms.FlyingPlatform;
+import GameProperties.GameProps;
 import bagel.util.Point;
+
+import java.util.Properties;
 
 public class PlayerFlyingPlatformCollisionDetector implements CollisionDetector{
     @Override
@@ -15,6 +16,24 @@ public class PlayerFlyingPlatformCollisionDetector implements CollisionDetector{
         }
 
         return checkCollision((Player) entity1, (FlyingPlatform) entity2);
+    }
+
+    private boolean checkCollision(Player player, FlyingPlatform flyingPlatform){
+        Properties gameProps = GameProps.getGameProps();
+        Point playerLocation = player.getLocation();
+        Point flyingPlatformLocation = flyingPlatform.getLocation();
+        double diffX = playerLocation.x - flyingPlatformLocation.x;
+        double diffY = playerLocation.y - flyingPlatformLocation.y;
+
+        double HALF_LENGTH = Double.parseDouble(gameProps.getProperty("gameObjects.flyingPlatform.halfLength"));
+        double HALF_HEIGHT = Double.parseDouble(gameProps.getProperty("gameObjects.flyingPlatform.halfHeight"));
+
+        if (Math.abs(diffX) < HALF_LENGTH &&
+                (HALF_HEIGHT - 1 <= diffY && diffY <= HALF_HEIGHT)){
+            return true;
+        }
+
+        return false;
     }
 
 
