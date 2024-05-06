@@ -7,6 +7,7 @@ import GameEntities.CollisionInterface.RadiusCollidable;
 import GameEntities.Movable;
 
 import bagel.Image;
+import bagel.Input;
 import bagel.util.Point;
 import enums.MoveDirection;
 
@@ -27,6 +28,11 @@ public abstract class PickupItem extends GameEntity implements Movable, RadiusCo
 
     public boolean isPlayerCollided() {
         return isPlayerCollided;
+    }
+
+    @Override
+    public void updatePerFrame(Input input){
+        updateMove(input);
     }
 
     @Override

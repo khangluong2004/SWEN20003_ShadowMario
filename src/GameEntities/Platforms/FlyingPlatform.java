@@ -6,6 +6,7 @@ import GameProperties.GameProps;
 import GameEntities.Movable;
 
 import bagel.Image;
+import bagel.Input;
 import bagel.util.Point;
 import enums.MoveDirection;
 
@@ -32,6 +33,11 @@ public class FlyingPlatform extends GameEntity implements Movable, Collidable {
 
         this.entityImages.add(new Image(gameProps.getProperty("gameObjects.flyingPlatform.image")));
         this.updateDirection();
+    }
+
+    @Override
+    public void updatePerFrame(Input input){
+        updateMove(input);
     }
 
     /**

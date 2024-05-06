@@ -9,6 +9,7 @@ import GameEntities.GameEntity;
 import GameEntities.Movable;
 import GameProperties.GameProps;
 import bagel.Image;
+import bagel.Input;
 import bagel.util.Point;
 import enums.MoveDirection;
 
@@ -44,6 +45,11 @@ public class FireBall extends GameEntity implements Movable, Attacker, RadiusCol
         } else {
             this.velocity = FIRE_STEP_SIZE;
         }
+    }
+
+    @Override
+    public void updatePerFrame(Input input){
+        updateMove(input);
     }
 
     @Override

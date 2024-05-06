@@ -9,6 +9,7 @@ import GameEntities.Movable;
 import GameProperties.GameProps;
 
 import bagel.Image;
+import bagel.Input;
 import bagel.util.Point;
 import enums.MoveDirection;
 
@@ -44,6 +45,11 @@ public class Enemy extends GameEntity implements RadiusCollidable, Movable, Atta
         this.entityImages.add(new Image(gameProps.getProperty("gameObjects.enemy.image")));
         this.inflictedDamage = false;
         this.updateDirection();
+    }
+
+    @Override
+    public void updatePerFrame(Input input){
+        updateMove(input);
     }
 
     /**

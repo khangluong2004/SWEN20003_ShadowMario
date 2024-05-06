@@ -17,8 +17,7 @@ import GameEntities.Flags.EndFlag;
 
 
 import GameProperties.GameProps;
-import bagel.Image;
-import bagel.Window;
+import bagel.*;
 import bagel.util.Point;
 
 import enums.GameStage;
@@ -79,10 +78,12 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
     }
 
     @Override
-    public void updatePerFrame(){
+    public void updatePerFrame(Input input){
         // Update the power ups
         this.powerUpManager.updatePerFrameAllPowerUp();
         this.allPowerUpItems = powerUpManager.getPowerUpItems();
+
+        updateMove(input);
     }
 
     private void setHealth(double newHealth){

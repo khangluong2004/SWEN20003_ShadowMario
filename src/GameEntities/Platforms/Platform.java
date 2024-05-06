@@ -6,6 +6,7 @@ import GameEntities.Movable;
 
 import GameProperties.GameProps;
 import bagel.Image;
+import bagel.Input;
 import bagel.util.Point;
 import enums.MoveDirection;
 
@@ -29,6 +30,11 @@ public class Platform extends GameEntity implements Collidable, Movable {
         Properties gameProps = GameProps.getGameProps();
         this.entityImages.add(new Image(gameProps.getProperty("gameObjects.platform.image")));
         this.STEP_SIZE = Integer.parseInt(gameProps.getProperty("gameObjects.platform.speed"));
+    }
+
+    @Override
+    public void updatePerFrame(Input input){
+        updateMove(input);
     }
 
     public int getOffsetPixels(){

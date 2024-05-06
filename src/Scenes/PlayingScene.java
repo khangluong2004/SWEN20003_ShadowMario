@@ -32,11 +32,17 @@ public class PlayingScene implements Scene{
 
     @Override
     public void drawScene() {
-
+        for (var entitiesEntry: entitiesByTypes.entrySet()){
+            List<GameEntity> listEntities = entitiesEntry.getValue();
+            for (GameEntity entity: listEntities){
+                entity.draw();
+            }
+        }
     }
 
     @Override
     public void updateScene(Input input) {
+        
 
     }
 

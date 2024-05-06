@@ -2,6 +2,7 @@ package GameEntities;
 
 import Scenes.Scene;
 import bagel.Image;
+import bagel.Input;
 import bagel.util.Point;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public abstract class GameEntity {
 
     // Used if the entity needs to update any attributes per frame
     // Is called first before any actions
-    public void updatePerFrame(){}
+    public void updatePerFrame(Input input){}
 
     public Point getLocation(){
         return location;
