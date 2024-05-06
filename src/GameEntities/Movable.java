@@ -21,7 +21,7 @@ public interface Movable {
         }
 
         if (input.isDown(Keys.LEFT)){
-            this.move(MoveDirection.LEFT)
+            this.move(MoveDirection.LEFT);
         }
 
         if (input.isDown(Keys.RIGHT)){
