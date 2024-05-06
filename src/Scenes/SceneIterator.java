@@ -1,9 +1,7 @@
 package Scenes;
 
-import bagel.Input;
+import Scenes.PlayingScenes.PlayingScene;
 import enums.GameStage;
-
-import java.util.Properties;
 
 /***
  * Scene iterator: Handling the switching scenes

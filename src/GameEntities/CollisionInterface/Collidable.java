@@ -1,5 +1,7 @@
 package GameEntities.CollisionInterface;
 
+import java.awt.*;
+
 /**
  * Interface for entities that can collide with other entities,
  * and change the behaviour of the other collided entities
@@ -17,4 +19,5 @@ public interface Collidable {
      * @param entity the entity that is collided with
      */
     void endCollideWith(Collidable entity);
+
 }

@@ -1,78 +1,75 @@
 package CollisionHandling;
 
+import GameEntities.CollisionInterface.Collidable;
 import GameEntities.GameEntity;
 import GameEntities.Characters.Player;
+import enums.GameEntityTypes;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The mediator class to control the collision between entities
  */
 public class CollisionMediator {
-    // TODO: Adapt to the new designed CollisionMediator
+    // Keep a references of all entities in the scene owned it
+    private Map<GameEntityTypes, List<GameEntity>> entitiesByTypes;
+    private List<CollisionDetector> collisionDetectors;
 
-    // References of all entities
-    // GameEntity.Characters.Player is a special one, since all effect is derived
-    // from the player collided with other entities.
-
-    // Keeping player as a separate entity to ensure an O(n)
-    // scan instead of O(n^2) scanning for collision between all pairs
-    // Might require further abstraction for more complicated collision between object pairs
-    private final Player PLAYER;
-    private final GameEntity[] OTHER_ENTITIES;
-
-    private final int MAX_OTHER_ENTITIES;
-
-    /**
-     * Constructor: Initialize all entities references
-     * @param player
-     * @param otherEntities
-     * @param MAX_ENTITIES
-     */
-    public CollisionMediator(Player player, GameEntity[] otherEntities, int MAX_ENTITIES){
-        this.PLAYER = player;
-        this.OTHER_ENTITIES = otherEntities;
-        this.MAX_OTHER_ENTITIES = MAX_ENTITIES - 1;
+    public CollisionMediator(Map<GameEntityTypes, List<GameEntity>> entitiesByTypes){
+        this.entitiesByTypes = entitiesByTypes;
+        this.collisionDetectors = new ArrayList<CollisionDetector>();
     }
 
-    /**
-     * Helper methods to compare between the current distance and the specified collision range
-     * Keep squared distance to avoid precision and performance issue with square root
-     * @param distanceSquared Current distance between 2 objects squared
-     * @param range The collision range between 2 objects (collided if closer than the specified range)
-     * @return a boolean indicating if the 2 objects collided or not
+    /***
+     * Add collisionDetector
+     * @param detector
      */
-    private boolean checkCollide(double distanceSquared, double range){
-        double rangeSquared = range * range;
-        return distanceSquared <= rangeSquared;
+    public void addCollisionDetector(CollisionDetector detector){
+        collisionDetectors.add(detector);
     }
 
-    /**
-     * Main method to scan through all the gameEntities, detect if the player collide with any of them.
-     * If yes, then call the collideWith() method on the collided entities to produce entity-specific on the player
-     * and the entity
+    /***
+     * Handling collision by calling all the collisionDetectors on all objects,
+     * and call the collide with method
      */
     public void handleCollision(){
-        // Check if the player collides with any other entities
-        for (int i=0; i <  MAX_OTHER_ENTITIES; i++){
-            if (OTHER_ENTITIES[i] == null || !(OTHER_ENTITIES[i] instanceof Collidable)){
-                continue;
-            }
+        List<Collidable> listAllCollidables = this.getCollidables();
+        for (int i=0; i < listAllCollidables.size(); i++){
+            for (int j=i+1; j < listAllCollidables.size(); j++){
+                Collidable entity1 = listAllCollidables.get(i);
+                Collidable entity2 = listAllCollidables.get(j);
 
-            Collidable collidableEntity = (Collidable) OTHER_ENTITIES[i];
-            double distanceSquared = collidableEntity.calcDistanceSquared(PLAYER.getLocation());
-            double range = PLAYER.getRadius() + collidableEntity.getRadius();
-
-            // Range is different for the GameEntity.Platforms.Platform, which only considers the platform radius
-            if (collidableEntity instanceof Platform){
-                range = collidableEntity.getRadius();
-            }
-
-            if (checkCollide(distanceSquared, range)){
-                collidableEntity.startCollideWith(PLAYER);
-                PLAYER.startCollideWith(collidableEntity);
-                collidableEntity.endCollideWith(PLAYER);
-                PLAYER.startCollideWith(collidableEntity);
+                for (CollisionDetector collisionDetector: collisionDetectors){
+                    // Check 2 directions (since all collision for this game is bi-directional)
+                    if (collisionDetector.checkCollision(entity1, entity2) ||
+                            collisionDetector.checkCollision(entity2, entity1)){
+                        entity1.startCollideWith(entity2);
+                        entity2.startCollideWith(entity1);
+                        entity1.endCollideWith(entity2);
+                        entity2.endCollideWith(entity1);
+                    }
+                }
             }
         }
     }
+
+    /***
+     * Convert the map to array of Collidable for easier collision handling
+     *
+     */
+    private List<Collidable> getCollidables(){
+        List<Collidable> listAllCollidables = new ArrayList<>();
+        for (var entitiesEntry: entitiesByTypes.entrySet()){
+            for (GameEntity entity: entitiesEntry.getValue()){
+                if (entity instanceof Collidable){
+                    listAllCollidables.add((Collidable) entity);
+                }
+            }
+        }
+        return listAllCollidables;
+    }
+
 
 }
