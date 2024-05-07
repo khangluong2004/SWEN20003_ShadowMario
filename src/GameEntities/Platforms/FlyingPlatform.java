@@ -17,11 +17,12 @@ import java.util.Random;
 public class FlyingPlatform extends GameEntity implements Movable, Collidable {
     private final int STEP_SIZE;
     private final int RANDOM_STEP_SIZE;
-    private final int FRAMES_UNTIL_CHANGE_DIRECTION;
+    private final int MAX_DISPLACEMENT;
 
     // Negative velocity is to the left, positive is to the right
     private int velocity;
-    private int frameSinceLastChangeDirection;
+    private int randomDisplacement;
+
 
     public FlyingPlatform(Point location){
         super(new ArrayList<Image>(), 0, location);
@@ -29,10 +30,22 @@ public class FlyingPlatform extends GameEntity implements Movable, Collidable {
 
         this.STEP_SIZE = Integer.parseInt(gameProps.getProperty("gameObjects.flyingPlatform.speed"));
         this.RANDOM_STEP_SIZE = Integer.parseInt(gameProps.getProperty("gameObjects.flyingPlatform.randomSpeed"));
-        this.FRAMES_UNTIL_CHANGE_DIRECTION = Integer.parseInt(gameProps.getProperty("gameObjects.flyingPlatform.maxRandomDisplacementX")) / this.RANDOM_STEP_SIZE;
+        this.MAX_DISPLACEMENT = Integer.parseInt(gameProps.getProperty("gameObjects.flyingPlatform.maxRandomDisplacementX"));
 
         this.entityImages.add(new Image(gameProps.getProperty("gameObjects.flyingPlatform.image")));
+        this.randomDisplacement = 0;
         this.updateDirection();
+    }
+
+    private void updateDirection(){
+        Random random = new Random();
+        boolean toLeft = random.nextBoolean();
+        if (toLeft){
+            // Move left
+            velocity = -1 * RANDOM_STEP_SIZE;
+        } else {
+            velocity = RANDOM_STEP_SIZE;
+        }
     }
 
     @Override
@@ -51,26 +64,16 @@ public class FlyingPlatform extends GameEntity implements Movable, Collidable {
         } else if (direction == MoveDirection.RIGHT){
             this.location = new Point(location.x - STEP_SIZE, location.y);
         } else if (direction == MoveDirection.CONTINUE){
-            this.frameSinceLastChangeDirection++;
-            if (this.frameSinceLastChangeDirection >= FRAMES_UNTIL_CHANGE_DIRECTION){
-                this.updateDirection();
-                this.frameSinceLastChangeDirection = 0;
+            this.randomDisplacement += velocity;
+            if (Math.abs(randomDisplacement) >= MAX_DISPLACEMENT){
+                this.velocity = -1 * this.velocity;
             }
 
             this.location = new Point(location.x + velocity, location.y);
         }
     }
 
-    private void updateDirection(){
-        Random random = new Random();
-        boolean toLeft = random.nextBoolean();
-        if (toLeft){
-            // Move left
-            velocity = -1 * RANDOM_STEP_SIZE;
-        } else {
-            velocity = RANDOM_STEP_SIZE;
-        }
-    }
+
 
 
     /**

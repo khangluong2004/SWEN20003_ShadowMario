@@ -12,6 +12,7 @@ import GameEntities.Attackers.Enemy;
 import GameEntities.PickUpItems.Coin;
 import GameEntities.PickUpItems.DoubleScorePower;
 import GameEntities.PickUpItems.InvinciblePower;
+import GameEntities.Platforms.FlyingPlatform;
 import GameEntities.Platforms.Platform;
 import GameEntities.Flags.EndFlag;
 
@@ -61,6 +62,9 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
     // Status observer
     Set<StatusObserver> observers;
 
+    // Previous platform location: To handle the silly requirements for not able to jump down
+    Point previousPlatformLocation;
+
 
     public Player(Point location){
         super(new ArrayList<Image>(), 0, location);
@@ -83,12 +87,16 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         this.setHealth(Double.parseDouble(gameProps.getProperty("gameObjects.player.health")));
         this.lockJump = false;
         this.gameStage = GameStage.PLAYING;
+        this.previousPlatformLocation = new Point(0.0, 0.0);
     }
 
     @Override
     public void updatePerFrame(Input input){
         // Update the power ups
         this.powerUpManager.updatePerFrameAllPowerUp();
+
+        // Set jump acceleration always to simulate gravity
+        this.velocity += JUMP_ACCELERATION;
 
         if (this.gameStage == GameStage.PLAYING){
             updateMove(input);
@@ -145,9 +153,6 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
             this.currentImageIndex = 0;
         } else if (direction == MoveDirection.CONTINUE){
             location = new Point(location.x, location.y + velocity);
-            if (lockJump){
-                velocity += JUMP_ACCELERATION;
-            }
 
             // Handling losing movement
             // Change state to finish losing when the player is out of the screen
@@ -175,6 +180,8 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
             handleCollisionEntity((Enemy) entity);
         } else if (entity instanceof Platform){
             handleCollisionEntity((Platform) entity);
+        } else if (entity instanceof FlyingPlatform){
+            handleCollisionEntity((FlyingPlatform) entity);
         } else if (entity instanceof Coin){
             handleCollisionEntity((Coin) entity);
         } else if (entity instanceof DoubleScorePower){
@@ -193,7 +200,7 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         // then change health (if first time collided)
         double damage = enemy.getDamage(this);
 
-        if (!enemy.isInflictedDamage()){
+        if (!enemy.isInflictedDamage() && this.isDamageable()){
             this.setHealth(this.health + damage);
         }
     }
@@ -213,12 +220,35 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         // high velocity of the player leads to collision detection appears after the player overlaps
         // with the platform
         this.location = new Point(this.location.x, platformLocation.y - platformHeight - offsetPixels);
+        this.previousPlatformLocation = platformLocation;
+    }
+
+    private void handleCollisionEntity(FlyingPlatform flyingPlatform){
+        // Check if jumping from a higher platform, then do nothing
+        Point currentPlatformLocation = flyingPlatform.getLocation();
+        if (this.previousPlatformLocation.y < currentPlatformLocation.y){
+            return;
+        }
+
+        // Stop jumping
+        this.lockJump = false;
+        this.velocity = 0;
+
+        Properties gameProps = GameProps.getGameProps();
+
+        // Offset the player to stand above the platform
+        this.location = new Point(this.location.x, currentPlatformLocation.y - Double.parseDouble(gameProps.getProperty("gameObjects.flyingPlatform.halfHeight")));
+        this.previousPlatformLocation = currentPlatformLocation;
     }
 
     private void handleCollisionEntity(Coin coin){
         // Downcast the coin, and change score if first time collided
         if (!coin.isPlayerCollided()){
-            this.score += coin.getCoinValue();
+            int value = coin.getCoinValue();
+            if (powerUpManager.getPowerUpItems().contains(PowerUpItem.DOUBLE_SCORE)){
+                value *= 2;
+            }
+            this.score += value;
         }
     }
 

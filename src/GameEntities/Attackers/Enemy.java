@@ -25,12 +25,12 @@ public class Enemy extends GameEntity implements RadiusCollidable, Movable, Atta
     private final double RADIUS;
     private final int STEP_SIZE;
     private final int RANDOM_STEP_SIZE;
-    private final int FRAMES_UNTIL_CHANGE_DIRECTION;
+    private final int MAX_DISPLACEMENT;
     private final double DAMAGE_SIZE;
     private boolean inflictedDamage;
     // Negative velocity is to the left, positive is to the right
     private int velocity;
-    private int frameSinceLastChangeDirection;
+    private int randomDisplacement;
 
     public Enemy(Point location){
         super(new ArrayList<Image>(), 0, location);
@@ -40,11 +40,23 @@ public class Enemy extends GameEntity implements RadiusCollidable, Movable, Atta
         this.RADIUS = Double.parseDouble(gameProps.getProperty("gameObjects.enemy.radius"));
         this.STEP_SIZE = Integer.parseInt(gameProps.getProperty("gameObjects.enemy.speed"));
         this.RANDOM_STEP_SIZE = Integer.parseInt(gameProps.getProperty("gameObjects.enemy.randomSpeed"));
-        this.FRAMES_UNTIL_CHANGE_DIRECTION = Integer.parseInt(gameProps.getProperty("gameObjects.enemy.maxRandomDisplacementX")) / this.RANDOM_STEP_SIZE;
+        this.MAX_DISPLACEMENT = Integer.parseInt(gameProps.getProperty("gameObjects.enemy.maxRandomDisplacementX"));
 
         this.entityImages.add(new Image(gameProps.getProperty("gameObjects.enemy.image")));
         this.inflictedDamage = false;
+        this.randomDisplacement = 0;
         this.updateDirection();
+    }
+
+    private void updateDirection(){
+        Random random = new Random();
+        boolean toLeft = random.nextBoolean();
+        if (toLeft){
+            // Move left
+            velocity = -1 * RANDOM_STEP_SIZE;
+        } else {
+            velocity = RANDOM_STEP_SIZE;
+        }
     }
 
     @Override
@@ -63,24 +75,12 @@ public class Enemy extends GameEntity implements RadiusCollidable, Movable, Atta
         } else if (direction == MoveDirection.RIGHT){
             this.location = new Point(location.x - STEP_SIZE, location.y);
         } else if (direction == MoveDirection.CONTINUE){
-            this.frameSinceLastChangeDirection++;
-            if (this.frameSinceLastChangeDirection >= FRAMES_UNTIL_CHANGE_DIRECTION){
-                this.updateDirection();
-                this.frameSinceLastChangeDirection = 0;
+            this.randomDisplacement += velocity;
+            if (Math.abs(randomDisplacement) >= MAX_DISPLACEMENT){
+                this.velocity = -1 * this.velocity;
             }
 
             this.location = new Point(location.x + velocity, location.y);
-        }
-    }
-
-    private void updateDirection(){
-        Random random = new Random();
-        boolean toLeft = random.nextBoolean();
-        if (toLeft){
-            // Move left
-            velocity = -1 * RANDOM_STEP_SIZE;
-        } else {
-            velocity = RANDOM_STEP_SIZE;
         }
     }
 

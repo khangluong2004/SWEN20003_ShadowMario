@@ -122,10 +122,10 @@ public abstract class PlayingScene implements Scene {
     @Override
     public void updateScene(Input input) {
         cleanDeletedEntity();
+        this.collisionMediator.handleCollision();
         for (GameEntity entity: allGameEntities){
             entity.updatePerFrame(input);
         }
-        this.collisionMediator.handleCollision();
     }
 
     public GameStage getGameStage(){
