@@ -8,6 +8,7 @@ import GameEntities.GameEntity;
 import GameEntities.Movable;
 import GameProperties.GameProps;
 
+import Scenes.PlayingScenes.PlayingScene;
 import bagel.Image;
 import bagel.Input;
 import bagel.util.Point;
@@ -32,8 +33,8 @@ public class Enemy extends GameEntity implements RadiusCollidable, Movable, Atta
     private int velocity;
     private int randomDisplacement;
 
-    public Enemy(Point location){
-        super(new ArrayList<Image>(), 0, location);
+    public Enemy(Point location, PlayingScene scene){
+        super(new ArrayList<Image>(), 0, location, scene);
         Properties gameProps = GameProps.getGameProps();
 
         this.DAMAGE_SIZE = -1 * Double.parseDouble(gameProps.getProperty("gameObjects.enemy.damageSize"));

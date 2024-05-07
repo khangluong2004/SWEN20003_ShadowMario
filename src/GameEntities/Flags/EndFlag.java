@@ -7,6 +7,7 @@ import GameEntities.Movable;
 
 import GameProperties.GameProps;
 
+import Scenes.PlayingScenes.PlayingScene;
 import bagel.Image;
 import bagel.Input;
 import bagel.util.Point;
@@ -26,8 +27,8 @@ public class EndFlag extends GameEntity implements RadiusCollidable, Movable {
      * Constructor to initialize the location and image
      * @param location
      */
-    public EndFlag(Point location){
-        super(new ArrayList<Image>(), 0, location);
+    public EndFlag(Point location, PlayingScene scene){
+        super(new ArrayList<Image>(), 0, location, scene);
         Properties gameProps = GameProps.getGameProps();
 
         this.entityImages.add(new Image(gameProps.getProperty("gameObjects.endFlag.image")));

@@ -1,34 +1,80 @@
 package GameEntities.Characters;
 
+import GameEntities.Attackers.FireBall;
 import GameEntities.CollisionInterface.Collidable;
 import GameEntities.GameEntity;
 import GameEntities.Movable;
+import GameEntities.StatusContainer;
+import GameProperties.GameProps;
+import Scenes.PlayingScenes.PlayingScene;
 import bagel.Image;
 import bagel.Input;
 import bagel.util.Point;
 import enums.MoveDirection;
+import utils.StatusMessages.StatusObserver;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable, Collidable {
-    public EnemyBoss(Point location) {
-        super(new ArrayList<Image>(), 0, location);
+public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable, Collidable, StatusContainer {
+    private final int STEP_SIZE;
+    private final int DIE_SPEED;
+    private final int FRAME_UNTIL_NEXT_FIRE;
+    private final Random random;
+    private double health;
+    private int verticalVelocity;
+    private int frameSinceLastFire;
+
+    // Status observers for the status messae
+    private Set<StatusObserver> observers;
+
+
+    public EnemyBoss(Point location, PlayingScene scene) {
+        super(new ArrayList<Image>(), 0, location, scene);
+        Properties gameProps = GameProps.getGameProps();
+        this.entityImages.add(new Image(gameProps.getProperty("gameObjects.enemyBoss.image")));
+
+        this.STEP_SIZE = Integer.parseInt(gameProps.getProperty("gameObjects.enemyBoss.speed"));
+        this.DIE_SPEED = 2;
+        this.FRAME_UNTIL_NEXT_FIRE = 100;
+        this.random = new Random();
+
+        this.observers = new HashSet<>();
+
+        this.health = Double.parseDouble(gameProps.getProperty("gameObjects.enemyBoss.health"));
+        this.verticalVelocity = 0;
+        this.frameSinceLastFire = 0;
     }
 
     @Override
-    public void fire() {
-
+    public void updatePerFrame(Input input) {
+        updateMove(input);
+        this.frameSinceLastFire = (this.frameSinceLastFire + 1) % FRAME_UNTIL_NEXT_FIRE;
     }
 
     @Override
-    public void target(GameEntity target) {
+    public void fire(GameEntity target) {
+        boolean moveLeft = true;
+        Point targetLocation = target.getLocation();
+        Point firerLocation = this.location;
 
+        if (targetLocation.x > firerLocation.x){
+            moveLeft = false;
+        }
+
+        this.currentScene.addGameEntity(new FireBall(this.location, moveLeft, this, this.currentScene));
     }
+
 
     @Override
     public double getHealth() {
         return 0;
+    }
+
+    private void setHealth(double newHealth){
+        this.health = Math.max(newHealth, 0);
+        if (this.health <= 0){
+            verticalVelocity = DIE_SPEED;
+        }
     }
 
     @Override
@@ -38,7 +84,24 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
 
     @Override
     public void startCollideWith(Collidable entity) {
+        if (entity instanceof Player){
+            handleCollision((Player) entity);
+        } else if (entity instanceof FireBall){
+            handleCollision((FireBall) entity);
+        }
+    }
 
+    private void handleCollision(Player player){
+        if (frameSinceLastFire == 0){
+            boolean firable = random.nextBoolean();
+            if (firable){
+                this.fire(player);
+            }
+        }
+    }
+
+    private void handleCollision(FireBall fireBall){
+        this.setHealth(this.health + fireBall.getDamage(this));
     }
 
     @Override
@@ -48,13 +111,30 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
 
     @Override
     public void move(MoveDirection direction) {
+        if (direction == MoveDirection.LEFT){
+            this.location = new Point(location.x + STEP_SIZE, location.y);
+        } else if (direction == MoveDirection.RIGHT){
+            this.location = new Point(location.x - STEP_SIZE, location.y);
+        } else if (direction == MoveDirection.CONTINUE){
+            location = new Point(location.x, location.y + verticalVelocity);
+        }
+    }
 
+
+    @Override
+    public void addStatusObserver(StatusObserver observer) {
+        this.observers.add(observer);
     }
 
     @Override
-    public void updatePerFrame(Input input) {
-
+    public void removeObserver(StatusObserver observer) {
+        this.observers.remove(observer);
     }
 
-    // TODO: Implement EnemyBoss
+    @Override
+    public void notifyObservers() {
+        for (StatusObserver observer: observers){
+            observer.notify(this);
+        }
+    }
 }

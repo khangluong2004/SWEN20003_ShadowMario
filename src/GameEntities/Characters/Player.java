@@ -19,6 +19,7 @@ import GameEntities.Flags.EndFlag;
 
 import GameEntities.StatusContainer;
 import GameProperties.GameProps;
+import Scenes.PlayingScenes.PlayingScene;
 import bagel.*;
 import bagel.util.Point;
 
@@ -54,6 +55,9 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
     private int score;
     private double health;
 
+    // Boolean to check if in range to fire
+    private boolean isFirable;
+
     private GameStage gameStage;
 
     // Powerup Manager
@@ -66,8 +70,8 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
     Point previousPlatformLocation;
 
 
-    public Player(Point location){
-        super(new ArrayList<Image>(), 0, location);
+    public Player(Point location, PlayingScene scene){
+        super(new ArrayList<Image>(), 0, location, scene);
         Properties gameProps = GameProps.getGameProps();
 
         // Store the right image at 0, left image at 1
@@ -88,6 +92,7 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         this.lockJump = false;
         this.gameStage = GameStage.PLAYING;
         this.previousPlatformLocation = new Point(0.0, 0.0);
+        this.isFirable = false;
     }
 
     @Override
@@ -95,17 +100,22 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         // Update the power ups
         this.powerUpManager.updatePerFrameAllPowerUp();
 
-        // Set jump acceleration always to simulate gravity
-        this.velocity += JUMP_ACCELERATION;
-
         if (this.gameStage == GameStage.PLAYING){
             updateMove(input);
+            if (input.isDown(Keys.S) && isFirable){
+                this.fire(null);
+            }
         } else {
             // If lost, then just continue the downward movement
             move(MoveDirection.CONTINUE);
         }
 
         notifyObservers();
+
+        // Set jump acceleration always to simulate gravity
+        this.velocity += JUMP_ACCELERATION;
+        // Reset isFirable, so it's only set when in range with boss
+        this.isFirable = false;
     }
 
     private void setHealth(double newHealth){
@@ -192,6 +202,8 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
             handleCollisionEntity((EndFlag) entity);
         } else if (entity instanceof FireBall){
             handleCollisionEntity((FireBall) entity);
+        } else if (entity instanceof EnemyBoss){
+            handleCollisionEntity((EnemyBoss) entity);
         }
     }
 
@@ -273,6 +285,10 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         this.setHealth(this.health + fireBall.getDamage(this));
     }
 
+    private void handleCollisionEntity(EnemyBoss enemyBoss){
+        this.isFirable = true;
+    }
+
     @Override
     public void endCollideWith(Collidable entity) {}
 
@@ -282,14 +298,16 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
     }
 
     @Override
-    public void fire() {
-        // TODO: Fire after set up the playing scene
+    public void fire(GameEntity target) {
+        boolean moveLeft = true;
+        if (this.currentImageIndex == 0){
+            moveLeft = false;
+        }
+
+        this.currentScene.addGameEntity(new FireBall(this.location, moveLeft, this, this.currentScene));
     }
 
-    @Override
-    public void target(GameEntity target) {
-        //TODO: Finish after set up the playing scene
-    }
+
 
     @Override
     public void addStatusObserver(StatusObserver observer) {

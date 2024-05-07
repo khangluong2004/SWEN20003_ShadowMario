@@ -5,6 +5,7 @@ import GameEntities.GameEntity;
 import GameProperties.GameProps;
 import GameEntities.Movable;
 
+import Scenes.PlayingScenes.PlayingScene;
 import bagel.Image;
 import bagel.Input;
 import bagel.util.Point;
@@ -24,8 +25,8 @@ public class FlyingPlatform extends GameEntity implements Movable, Collidable {
     private int randomDisplacement;
 
 
-    public FlyingPlatform(Point location){
-        super(new ArrayList<Image>(), 0, location);
+    public FlyingPlatform(Point location, PlayingScene scene){
+        super(new ArrayList<Image>(), 0, location, scene);
         Properties gameProps = GameProps.getGameProps();
 
         this.STEP_SIZE = Integer.parseInt(gameProps.getProperty("gameObjects.flyingPlatform.speed"));

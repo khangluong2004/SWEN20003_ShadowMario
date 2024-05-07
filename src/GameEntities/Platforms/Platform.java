@@ -5,6 +5,7 @@ import GameEntities.CollisionInterface.Collidable;
 import GameEntities.Movable;
 
 import GameProperties.GameProps;
+import Scenes.PlayingScenes.PlayingScene;
 import bagel.Image;
 import bagel.Input;
 import bagel.util.Point;
@@ -24,8 +25,8 @@ public class Platform extends GameEntity implements Collidable, Movable {
     private final int OFFSET_PIXELS = 8;
 
 
-    public Platform(Point location){
-        super(new ArrayList<Image>(), 0, location);
+    public Platform(Point location, PlayingScene scene){
+        super(new ArrayList<Image>(), 0, location, scene);
 
         Properties gameProps = GameProps.getGameProps();
         this.entityImages.add(new Image(gameProps.getProperty("gameObjects.platform.image")));

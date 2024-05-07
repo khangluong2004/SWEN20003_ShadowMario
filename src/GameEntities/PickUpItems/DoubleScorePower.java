@@ -1,6 +1,7 @@
 package GameEntities.PickUpItems;
 
 import GameProperties.GameProps;
+import Scenes.PlayingScenes.PlayingScene;
 import bagel.Image;
 import bagel.util.Point;
 
@@ -9,8 +10,8 @@ import java.util.Properties;
 
 public class DoubleScorePower extends PickupItem{
     private final int DOUBLE_SCORE_LASTING_FRAMES;
-    public DoubleScorePower(Point location){
-        super(new ArrayList<Image>(), 0, location);
+    public DoubleScorePower(Point location, PlayingScene scene){
+        super(new ArrayList<Image>(), 0, location, scene);
         Properties gameProps = GameProps.getGameProps();
 
         this.DOUBLE_SCORE_LASTING_FRAMES = Integer.parseInt(gameProps.getProperty("gameObjects.doubleScore.maxFrames"));

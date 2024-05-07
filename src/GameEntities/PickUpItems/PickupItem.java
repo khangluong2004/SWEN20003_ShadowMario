@@ -6,6 +6,7 @@ import GameEntities.GameEntity;
 import GameEntities.CollisionInterface.RadiusCollidable;
 import GameEntities.Movable;
 
+import Scenes.PlayingScenes.PlayingScene;
 import bagel.Image;
 import bagel.Input;
 import bagel.util.Point;
@@ -20,8 +21,8 @@ public abstract class PickupItem extends GameEntity implements Movable, RadiusCo
     protected int verticalVelocity;
     protected boolean isPlayerCollided;
 
-    public PickupItem(List<Image> entityImages, int currentImageIndex, Point location) {
-        super(entityImages, currentImageIndex, location);
+    public PickupItem(List<Image> entityImages, int currentImageIndex, Point location, PlayingScene scene) {
+        super(entityImages, currentImageIndex, location, scene);
         this.verticalVelocity = 0;
         this.isPlayerCollided = false;
     }

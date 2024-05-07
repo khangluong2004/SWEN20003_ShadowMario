@@ -66,7 +66,7 @@ public abstract class PlayingScene implements Scene {
                     allMessages.add(healthStatusMessage);
 
                     // Add observers and update them
-                    Player player = new Player(location);
+                    Player player = new Player(location, this);
                     player.addStatusObserver(scoreStatusMessage);
                     player.addStatusObserver(healthStatusMessage);
                     player.notifyObservers();
@@ -74,29 +74,29 @@ public abstract class PlayingScene implements Scene {
                     currentEntity = player;
                     break;
                 case "PLATFORM":
-                    currentEntity = new Platform(location);
+                    currentEntity = new Platform(location, this);
                     break;
                 case "ENEMY":
-                    currentEntity = new Enemy(location);
+                    currentEntity = new Enemy(location, this);
                     break;
                 case "END_FLAG":
-                    currentEntity = new EndFlag(location);
+                    currentEntity = new EndFlag(location, this);
                     break;
                 case "COIN":
-                    currentEntity = new Coin(location);
+                    currentEntity = new Coin(location, this);
                     break;
                 case "FLYING_PLATFORM":
-                    currentEntity = new FlyingPlatform(location);
+                    currentEntity = new FlyingPlatform(location, this);
                     break;
                 case "ENEMY_BOSS":
                     // TODO: Add messages for enemy boss
-                    currentEntity = new EnemyBoss(location);
+                    currentEntity = new EnemyBoss(location, this);
                     break;
                 case "INVINCIBLE_POWER":
-                    currentEntity = new InvinciblePower(location);
+                    currentEntity = new InvinciblePower(location, this);
                     break;
                 case "DOUBLE_SCORE":
-                    currentEntity = new DoubleScorePower(location);
+                    currentEntity = new DoubleScorePower(location, this);
                     break;
             }
 
@@ -107,6 +107,9 @@ public abstract class PlayingScene implements Scene {
     protected abstract void loadScene();
     protected abstract void loadCollisionDetectors();
 
+    public void addGameEntity(GameEntity entity){
+        allGameEntities.add(entity);
+    }
 
     @Override
     public void drawScene() {

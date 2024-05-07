@@ -2,12 +2,12 @@ package GameEntities.Attackers;
 
 import GameEntities.Characters.Fireable;
 import GameEntities.Characters.Killable;
-import GameEntities.Characters.Player;
 import GameEntities.CollisionInterface.Collidable;
 import GameEntities.CollisionInterface.RadiusCollidable;
 import GameEntities.GameEntity;
 import GameEntities.Movable;
 import GameProperties.GameProps;
+import Scenes.PlayingScenes.PlayingScene;
 import bagel.Image;
 import bagel.Input;
 import bagel.util.Point;
@@ -26,8 +26,8 @@ public class FireBall extends GameEntity implements Movable, Attacker, RadiusCol
     private Fireable firer;
     private int velocity;
 
-    public FireBall(Point location, boolean moveLeft, Fireable firer){
-        super(new ArrayList<Image>(), 0, location);
+    public FireBall(Point location, boolean moveLeft, Fireable firer, PlayingScene scene){
+        super(new ArrayList<Image>(), 0, location, scene);
         Properties gameProps = GameProps.getGameProps();
 
         this.firer = firer;

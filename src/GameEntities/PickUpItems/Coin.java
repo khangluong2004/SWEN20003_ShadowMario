@@ -1,6 +1,7 @@
 package GameEntities.PickUpItems;
 
 import GameProperties.GameProps;
+import Scenes.PlayingScenes.PlayingScene;
 import bagel.Image;
 import bagel.util.Point;
 
@@ -20,8 +21,8 @@ public class Coin extends PickupItem {
      * @param location Location to place the coin
      *
      */
-    public Coin(Point location){
-        super(new ArrayList<Image>(), 0, location);
+    public Coin(Point location, PlayingScene scene){
+        super(new ArrayList<Image>(), 0, location, scene);
         Properties gameProps = GameProps.getGameProps();
 
         this.COIN_VALUE = Integer.parseInt(gameProps.getProperty("gameObjects.coin.value"));

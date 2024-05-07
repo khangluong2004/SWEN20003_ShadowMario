@@ -1,6 +1,6 @@
 package GameEntities;
 
-import Scenes.Scene;
+import Scenes.PlayingScenes.PlayingScene;
 import bagel.Image;
 import bagel.Input;
 import bagel.util.Point;
@@ -17,14 +17,15 @@ public abstract class GameEntity {
     protected int currentImageIndex;
     protected Point location;
     protected boolean isDeleted;
-    protected Scene currentScene;
+    protected PlayingScene currentScene;
 
-    public GameEntity(List<Image> entityImages, int currentImageIndex, Point location){
+    public GameEntity(List<Image> entityImages, int currentImageIndex, Point location, PlayingScene scene){
         this.entityImages = entityImages;
         this.currentImageIndex = currentImageIndex;
 
         this.location = location;
         this.isDeleted = false;
+        this.currentScene = scene;
     }
 
     public void draw(){
