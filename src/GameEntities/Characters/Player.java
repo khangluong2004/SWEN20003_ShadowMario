@@ -16,6 +16,7 @@ import GameEntities.Platforms.Platform;
 import GameEntities.Flags.EndFlag;
 
 
+import GameEntities.StatusContainer;
 import GameProperties.GameProps;
 import bagel.*;
 import bagel.util.Point;
@@ -23,9 +24,11 @@ import bagel.util.Point;
 import enums.GameStage;
 import enums.MoveDirection;
 import enums.PowerUpItem;
+import utils.StatusMessages.StatusObserver;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
@@ -35,7 +38,7 @@ import java.util.Set;
  * Collision side-effects, as explained in GameEntity.Movable interface, is handled by the different
  * entities that collide with GameEntity.Characters.Player (and not the GameEntity.Characters.Player itself), ensuring Open-Closed Principle (I hope)
  */
-public class Player extends GameEntity implements Movable, RadiusCollidable, Killable, Fireable, ScoreContainer {
+public class Player extends GameEntity implements Movable, RadiusCollidable, Killable, Fireable, ScoreContainer, StatusContainer {
     // Images and constants
     private final static int START_JUMPING_SPEED = -20;
     private final static int DIE_SPEED = 2;
@@ -56,6 +59,8 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
     PowerUpManager powerUpManager;
     private Set<PowerUpItem> allPowerUpItems;
 
+    // Status observer
+    Set<StatusObserver> observers;
 
 
     public Player(Point location){
@@ -70,6 +75,10 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         // Add the powerup manager
         this.powerUpManager = new PowerUpManager();
 
+        // Add observers list
+        this.observers = new HashSet<StatusObserver>();
+
+        // Initialize attributes
         this.velocity = 0;
         this.score = 0;
         this.setHealth(Double.parseDouble(gameProps.getProperty("gameObjects.player.health")));
@@ -101,11 +110,6 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
 
     public int getScore() {
         return score;
-    }
-
-    @Override
-    public boolean isDead() {
-        return false;
     }
 
     @Override
@@ -148,11 +152,6 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
                 }
             }
         }
-    }
-
-
-    public void draw(){
-        super.draw();
     }
 
     public GameStage getEndingStage(){
@@ -256,5 +255,22 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
     @Override
     public void target(GameEntity target) {
         //TODO: Finish after set up the playing scene
+    }
+
+    @Override
+    public void addStatusObserver(StatusObserver observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(StatusObserver observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (StatusObserver observer: observers){
+            observer.notify(this);
+        }
     }
 }
