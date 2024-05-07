@@ -15,6 +15,7 @@ public class CollisionMediator {
     private Set<GameEntity> allGameEntities;
     private List<CollisionDetector> collisionDetectors;
 
+
     public CollisionMediator(Set<GameEntity> allGameEntities){
         this.allGameEntities = allGameEntities;
         this.collisionDetectors = new ArrayList<CollisionDetector>();
@@ -54,7 +55,7 @@ public class CollisionMediator {
     }
 
     /***
-     * Convert the map to array of Collidable and not deleted item for easier collision handling
+     * Parse and get the array of Collidable and not deleted item for easier collision handling
      *
      */
     private List<Collidable> getCollidables(){

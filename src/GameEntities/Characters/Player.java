@@ -93,6 +93,7 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         this.allPowerUpItems = powerUpManager.getPowerUpItems();
 
         updateMove(input);
+        notifyObservers();
     }
 
     private void setHealth(double newHealth){

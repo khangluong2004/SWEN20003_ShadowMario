@@ -27,11 +27,6 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
     }
 
     @Override
-    public boolean isDead() {
-        return false;
-    }
-
-    @Override
     public double getHealth() {
         return 0;
     }

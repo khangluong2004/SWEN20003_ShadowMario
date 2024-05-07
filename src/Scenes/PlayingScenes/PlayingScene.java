@@ -1,4 +1,4 @@
-package Scenes;
+package Scenes.PlayingScenes;
 
 import CollisionHandling.CollisionMediator;
 import GameEntities.Attackers.Enemy;
@@ -16,40 +16,34 @@ import Scenes.Scene;
 import bagel.Input;
 import bagel.util.Point;
 import enums.GameStage;
+import utils.Fonts;
 import utils.IOUtils;
 import utils.Message;
+import utils.StatusMessages.HealthStatusMessage;
+import utils.StatusMessages.ScoreStatusMessage;
+import utils.StatusMessages.StatusObserver;
 
 import java.util.*;
 
-public class PlayingScene implements Scene {
+public abstract class PlayingScene implements Scene {
     protected GameStage gameStage;
     protected Set<GameEntity> allGameEntities;
     protected List<Message> allMessages;
     protected CollisionMediator collisionMediator;
 
-    public PlayingScene(int currentLevel){
+    public PlayingScene(){
         allMessages = new ArrayList<Message>();
         allGameEntities = new HashSet<GameEntity>();
         collisionMediator = new CollisionMediator(allGameEntities);
 
         this.gameStage = GameStage.PLAYING;
-
-        Properties gameProps = GameProps.getGameProps();
-        String filename = "";
-
-        if (currentLevel == 1){
-            filename = gameProps.getProperty("level1File");
-        } else if (currentLevel == 2){
-            filename = gameProps.getProperty("level2File");
-        } else if (currentLevel == 3){
-            filename = gameProps.getProperty("level3File");
-        }
-
-        this.loadScene(filename);
+        this.loadScene();
+        this.loadCollisionDetectors();
     }
 
 
     protected void loadScene(String filename){
+        Properties gameProps = GameProps.getGameProps();
         String[][] worldInfo = IOUtils.readCsv(filename);
 
         // Load game entities
@@ -60,7 +54,24 @@ public class PlayingScene implements Scene {
 
             switch (name) {
                 case "PLAYER":
-                    currentEntity = new Player(location);
+                    ScoreStatusMessage scoreStatusMessage = new ScoreStatusMessage("",
+                            new Point(Double.parseDouble(gameProps.getProperty("score.x")),
+                                    Double.parseDouble(gameProps.getProperty("score.y"))),
+                            Fonts.getMediumFont(), false);
+                    HealthStatusMessage healthStatusMessage = new HealthStatusMessage("",
+                            new Point(Double.parseDouble(gameProps.getProperty("playerHealth.x")),
+                                    Double.parseDouble(gameProps.getProperty("playerHealth.y"))),
+                            Fonts.getMediumFont(), false);
+                    allMessages.add(scoreStatusMessage);
+                    allMessages.add(healthStatusMessage);
+
+                    // Add observers and update them
+                    Player player = new Player(location);
+                    player.addStatusObserver(scoreStatusMessage);
+                    player.addStatusObserver(healthStatusMessage);
+                    player.notifyObservers();
+
+                    currentEntity = player;
                     break;
                 case "PLATFORM":
                     currentEntity = new Platform(location);
@@ -78,6 +89,7 @@ public class PlayingScene implements Scene {
                     currentEntity = new FlyingPlatform(location);
                     break;
                 case "ENEMY_BOSS":
+                    // TODO: Add messages for enemy boss
                     currentEntity = new EnemyBoss(location);
                     break;
                 case "INVINCIBLE_POWER":
@@ -90,9 +102,10 @@ public class PlayingScene implements Scene {
 
             allGameEntities.add(currentEntity);
         }
-
-
     };
+
+    protected abstract void loadScene();
+    protected abstract void loadCollisionDetectors();
 
 
     @Override
@@ -112,11 +125,8 @@ public class PlayingScene implements Scene {
         for (GameEntity entity: allGameEntities){
             entity.updatePerFrame(input);
         }
+        this.collisionMediator.handleCollision();
     }
-
-    protected void updateMessage(){
-
-    };
 
     public GameStage getGameStage(){
         return this.gameStage;

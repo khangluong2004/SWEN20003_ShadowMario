@@ -1,5 +1,9 @@
 package Scenes;
 
+import Scenes.PlayingScenes.Level1;
+import Scenes.PlayingScenes.Level2;
+import Scenes.PlayingScenes.Level3;
+import Scenes.PlayingScenes.PlayingScene;
 import enums.GameStage;
 
 /***
@@ -27,7 +31,15 @@ public class SceneIterator {
         if (currentScene instanceof IntroductionScene){
             IntroductionScene currentScene = (IntroductionScene) this.currentScene;
             int curLevel = currentScene.getNextLevel();
-            this.currentScene = new PlayingScene(curLevel);
+            switch (curLevel){
+                case 1:
+                    this.currentScene = new Level1();
+                    break;
+                case 2:
+                    this.currentScene = new Level2();
+                case 3:
+                    this.currentScene = new Level3();
+            }
         } else if (currentScene instanceof PlayingScene){
             PlayingScene currentScene = (PlayingScene) this.currentScene;
             if (currentScene.getGameStage() == GameStage.WINNING){

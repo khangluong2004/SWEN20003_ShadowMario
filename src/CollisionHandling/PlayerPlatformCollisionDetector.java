@@ -23,7 +23,7 @@ public class PlayerPlatformCollisionDetector implements CollisionDetector{
         double diffY = Math.abs(playerLocation.y - platformLocation.y);
         double diffX = Math.abs(playerLocation.x - platformLocation.x);
 
-        double rangeY = (platform.getHeight()) / 2.0;
+        double rangeY = platform.getHeight() + platform.getOffsetPixels();
         double rangeX = (platform.getWidth()) / 2.0;
 
         if (diffY <= rangeY && diffX <= rangeX){
