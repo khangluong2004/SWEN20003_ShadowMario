@@ -15,7 +15,8 @@ public class DoubleScorePower extends PickupItem{
 
         this.DOUBLE_SCORE_LASTING_FRAMES = Integer.parseInt(gameProps.getProperty("gameObjects.doubleScore.maxFrames"));
         this.RADIUS = Double.parseDouble(gameProps.getProperty("gameObjects.doubleScore.radius"));
-        this.POPPING_SPEED = Integer.parseInt(gameProps.getProperty("gameObjects.doubleScore.speed"));
+        this.POPPING_SPEED = -10;
+        this.STEP_SIZE = Integer.parseInt(gameProps.getProperty("gameObjects.doubleScore.speed"));
 
         this.entityImages.add(new Image(gameProps.getProperty("gameObjects.doubleScore.image")));
     }

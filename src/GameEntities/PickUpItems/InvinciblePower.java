@@ -15,7 +15,8 @@ public class InvinciblePower extends PickupItem{
 
         this.INVINCIBLE_LASTING_FRAMES = Integer.parseInt(gameProps.getProperty("gameObjects.invinciblePower.maxFrames"));
         this.RADIUS = Double.parseDouble(gameProps.getProperty("gameObjects.invinciblePower.radius"));
-        this.POPPING_SPEED = Integer.parseInt(gameProps.getProperty("gameObjects.invinciblePower.speed"));
+        this.POPPING_SPEED = -10;
+        this.STEP_SIZE = Integer.parseInt(gameProps.getProperty("gameObjects.invinciblePower.speed"));
 
         this.entityImages.add(new Image(gameProps.getProperty("gameObjects.invinciblePower.image")));
     }

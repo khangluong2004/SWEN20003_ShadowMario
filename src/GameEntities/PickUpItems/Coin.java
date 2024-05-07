@@ -26,7 +26,8 @@ public class Coin extends PickupItem {
 
         this.COIN_VALUE = Integer.parseInt(gameProps.getProperty("gameObjects.coin.value"));
         this.RADIUS = Double.parseDouble(gameProps.getProperty("gameObjects.coin.radius"));
-        this.POPPING_SPEED = Integer.parseInt(gameProps.getProperty("gameObjects.coin.speed"));
+        this.POPPING_SPEED = -10;
+        this.STEP_SIZE = Integer.parseInt(gameProps.getProperty("gameObjects.coin.speed"));
 
         this.entityImages.add(new Image(gameProps.getProperty("gameObjects.coin.image")));
     }
