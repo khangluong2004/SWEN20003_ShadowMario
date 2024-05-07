@@ -51,5 +51,10 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
 
     }
 
+    @Override
+    public void updatePerFrame(Input input) {
+
+    }
+
     // TODO: Implement EnemyBoss
 }

@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -12,26 +14,24 @@ import java.util.Properties;
  */
 public class IOUtils {
 
-    private static final int MAX_LINES = 50;
-
     /***
      * Method that reads a CSV file and return a 2D String array
      * @param csvFile: the path to the CSV file
      * @return 2D String array
      */
-    public static String[][] readCsv(String csvFile) {
+    public static List<String[]> readCsv(String csvFile) {
         // Assume 50 lines in csv
-        String[][] result = new String[MAX_LINES][];
+        List<String[]> result = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))){
             String line;
 
-            for (int lineCount=0; lineCount < MAX_LINES; lineCount++){
+            while (true){
                 line = br.readLine();
                 // Stop early when nothing is read
                 if (line == null){
                     return result;
                 }
-                result[lineCount] = line.split(",");
+                result.add(line.split(","));
             }
         } catch(Exception e){
             e.printStackTrace();

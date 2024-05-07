@@ -36,7 +36,7 @@ public abstract class GameEntity {
 
     // Used if the entity needs to update any attributes per frame
     // Is called first before any actions
-    public void updatePerFrame(Input input){}
+    public abstract void updatePerFrame(Input input);
 
     public Point getLocation(){
         return location;
