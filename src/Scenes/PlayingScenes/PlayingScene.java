@@ -89,8 +89,19 @@ public abstract class PlayingScene implements Scene {
                     currentEntity = new FlyingPlatform(location, this);
                     break;
                 case "ENEMY_BOSS":
-                    // TODO: Add messages for enemy boss
-                    currentEntity = new EnemyBoss(location, this);
+                    // TODO: Change the font class
+                    // Create a status message for health
+                    HealthStatusMessage healthBossStatusMessage = new HealthStatusMessage("",
+                            new Point(Double.parseDouble(gameProps.getProperty("enemyBossHealth.x")),
+                                    Double.parseDouble(gameProps.getProperty("enemyBossHealth.y"))),
+                            Fonts.getMediumFont(), false);
+                    allMessages.add(healthBossStatusMessage);
+
+                    EnemyBoss enemyBoss = new EnemyBoss(location, this);
+                    enemyBoss.addStatusObserver(healthBossStatusMessage);
+                    enemyBoss.notifyObservers();
+
+                    currentEntity = enemyBoss;
                     break;
                 case "INVINCIBLE_POWER":
                     currentEntity = new InvinciblePower(location, this);
@@ -125,8 +136,10 @@ public abstract class PlayingScene implements Scene {
     @Override
     public void updateScene(Input input) {
         cleanDeletedEntity();
+        // Create a clone so the update doesn't interfere with the looping
+        Set<GameEntity> allGameEntitiesCopy = new HashSet<>(this.allGameEntities);
         this.collisionMediator.handleCollision();
-        for (GameEntity entity: allGameEntities){
+        for (GameEntity entity: allGameEntitiesCopy){
             entity.updatePerFrame(input);
         }
     }

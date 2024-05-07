@@ -2,6 +2,7 @@ package GameEntities.Characters;
 
 import GameEntities.Attackers.FireBall;
 import GameEntities.CollisionInterface.Collidable;
+import GameEntities.CollisionInterface.RadiusCollidable;
 import GameEntities.GameEntity;
 import GameEntities.Movable;
 import GameEntities.StatusContainer;
@@ -15,16 +16,17 @@ import utils.StatusMessages.StatusObserver;
 
 import java.util.*;
 
-public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable, Collidable, StatusContainer {
+public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable, RadiusCollidable, StatusContainer {
     private final int STEP_SIZE;
     private final int DIE_SPEED;
     private final int FRAME_UNTIL_NEXT_FIRE;
+    private final double RADIUS;
     private final Random random;
     private double health;
     private int verticalVelocity;
     private int frameSinceLastFire;
 
-    // Status observers for the status messae
+    // Status observers for the status message
     private Set<StatusObserver> observers;
 
 
@@ -34,6 +36,7 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
         this.entityImages.add(new Image(gameProps.getProperty("gameObjects.enemyBoss.image")));
 
         this.STEP_SIZE = Integer.parseInt(gameProps.getProperty("gameObjects.enemyBoss.speed"));
+        this.RADIUS = Double.parseDouble(gameProps.getProperty("gameObjects.enemyBoss.radius"));
         this.DIE_SPEED = 2;
         this.FRAME_UNTIL_NEXT_FIRE = 100;
         this.random = new Random();
@@ -49,6 +52,7 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
     public void updatePerFrame(Input input) {
         updateMove(input);
         this.frameSinceLastFire = (this.frameSinceLastFire + 1) % FRAME_UNTIL_NEXT_FIRE;
+        this.notifyObservers();
     }
 
     @Override
@@ -67,7 +71,7 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
 
     @Override
     public double getHealth() {
-        return 0;
+        return this.health;
     }
 
     private void setHealth(double newHealth){
@@ -101,6 +105,10 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
     }
 
     private void handleCollision(FireBall fireBall){
+        if (fireBall.isFirer(this)){
+            return;
+        }
+
         this.setHealth(this.health + fireBall.getDamage(this));
     }
 
@@ -136,5 +144,10 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
         for (StatusObserver observer: observers){
             observer.notify(this);
         }
+    }
+
+    @Override
+    public double getCollisionRadius(Collidable entity) {
+        return this.RADIUS;
     }
 }

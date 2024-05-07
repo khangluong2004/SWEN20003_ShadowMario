@@ -273,6 +273,7 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
     }
 
     private void handleCollisionEntity(EndFlag endFlag){
+        // TODO: Fix this. Delegate winning decision to the scene.
         // Set winning stage
         this.gameStage = GameStage.WINNING;
     }
@@ -282,6 +283,11 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         if (powerUpManager.getPowerUpItems().contains(PowerUpItem.INVINCIBLE)){
             return;
         }
+
+        if (fireBall.isFirer(this)){
+            return;
+        }
+
         this.setHealth(this.health + fireBall.getDamage(this));
     }
 
