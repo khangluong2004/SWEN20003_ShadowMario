@@ -31,14 +31,17 @@ public class SceneIterator {
         if (currentScene instanceof IntroductionScene){
             IntroductionScene currentScene = (IntroductionScene) this.currentScene;
             int curLevel = currentScene.getNextLevel();
+            System.out.println(curLevel);
             switch (curLevel){
                 case 1:
                     this.currentScene = new Level1();
                     break;
                 case 2:
                     this.currentScene = new Level2();
+                    break;
                 case 3:
                     this.currentScene = new Level3();
+                    break;
             }
         } else if (currentScene instanceof PlayingScene){
             PlayingScene currentScene = (PlayingScene) this.currentScene;

@@ -57,7 +57,6 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
 
     // Powerup Manager
     PowerUpManager powerUpManager;
-    private Set<PowerUpItem> allPowerUpItems;
 
     // Status observer
     Set<StatusObserver> observers;
@@ -90,9 +89,14 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
     public void updatePerFrame(Input input){
         // Update the power ups
         this.powerUpManager.updatePerFrameAllPowerUp();
-        this.allPowerUpItems = powerUpManager.getPowerUpItems();
 
-        updateMove(input);
+        if (this.gameStage == GameStage.PLAYING){
+            updateMove(input);
+        } else {
+            // If lost, then just continue the downward movement
+            move(MoveDirection.CONTINUE);
+        }
+
         notifyObservers();
     }
 
@@ -115,7 +119,7 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
 
     @Override
     public boolean isDamageable() {
-        return allPowerUpItems.contains(PowerUpItem.INVINCIBLE);
+        return !(powerUpManager.getPowerUpItems().contains(PowerUpItem.INVINCIBLE));
     }
 
 
@@ -185,7 +189,6 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
     }
 
     private void handleCollisionEntity(Enemy enemy){
-
         // Down cast enemy and get the damage value
         // then change health (if first time collided)
         double damage = enemy.getDamage(this);
@@ -234,7 +237,7 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
 
     private void handleCollisionEntity(FireBall fireBall){
         // Check if invincible, else change the health
-        if (allPowerUpItems.contains(PowerUpItem.INVINCIBLE)){
+        if (powerUpManager.getPowerUpItems().contains(PowerUpItem.INVINCIBLE)){
             return;
         }
         this.setHealth(this.health + fireBall.getDamage(this));

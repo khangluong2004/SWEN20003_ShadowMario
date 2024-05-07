@@ -44,7 +44,7 @@ public abstract class PlayingScene implements Scene {
 
     protected void loadScene(String filename){
         Properties gameProps = GameProps.getGameProps();
-        String[][] worldInfo = IOUtils.readCsv(filename);
+        List<String[]> worldInfo = IOUtils.readCsv(filename);
 
         // Load game entities
         for (String[] strings : worldInfo) {

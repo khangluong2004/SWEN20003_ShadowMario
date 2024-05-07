@@ -23,13 +23,13 @@ public class PlayerFlyingPlatformCollisionDetector implements CollisionDetector{
         Point playerLocation = player.getLocation();
         Point flyingPlatformLocation = flyingPlatform.getLocation();
         double diffX = playerLocation.x - flyingPlatformLocation.x;
-        double diffY = playerLocation.y - flyingPlatformLocation.y;
+        double diffY = -(playerLocation.y - flyingPlatformLocation.y);
 
-        double HALF_LENGTH = Double.parseDouble(gameProps.getProperty("gameObjects.flyingPlatform.halfLength"));
-        double HALF_HEIGHT = Double.parseDouble(gameProps.getProperty("gameObjects.flyingPlatform.halfHeight"));
+        int HALF_LENGTH = Integer.parseInt(gameProps.getProperty("gameObjects.flyingPlatform.halfLength"));
+        int HALF_HEIGHT = Integer.parseInt(gameProps.getProperty("gameObjects.flyingPlatform.halfHeight"));
 
-        if (Math.abs(diffX) < HALF_LENGTH &&
-                (HALF_HEIGHT - 1 <= diffY && diffY <= HALF_HEIGHT)){
+
+        if (Math.abs(diffX) < HALF_LENGTH && (HALF_HEIGHT - 1) <= diffY && diffY <= HALF_HEIGHT){
             return true;
         }
 

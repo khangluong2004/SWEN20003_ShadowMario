@@ -77,8 +77,6 @@ public abstract class PickupItem extends GameEntity implements Movable, RadiusCo
      */
     @Override
     public void move(MoveDirection direction){
-        System.out.println(this.getClass() + " " + this.location.x + ", " + this.location.y);
-        System.out.println(direction);
         if (direction == MoveDirection.LEFT){
             this.location = new Point(location.x + STEP_SIZE, location.y);
         } else if (direction == MoveDirection.RIGHT){

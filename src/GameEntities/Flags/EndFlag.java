@@ -8,6 +8,7 @@ import GameEntities.Movable;
 import GameProperties.GameProps;
 
 import bagel.Image;
+import bagel.Input;
 import bagel.util.Point;
 import enums.MoveDirection;
 
@@ -32,6 +33,11 @@ public class EndFlag extends GameEntity implements RadiusCollidable, Movable {
         this.entityImages.add(new Image(gameProps.getProperty("gameObjects.endFlag.image")));
         this.RADIUS = Double.parseDouble(gameProps.getProperty("gameObjects.endFlag.radius"));
         this.STEP_SIZE = Integer.parseInt(gameProps.getProperty("gameObjects.endFlag.speed"));
+    }
+
+    @Override
+    public void updatePerFrame(Input input){
+        updateMove(input);
     }
 
 
