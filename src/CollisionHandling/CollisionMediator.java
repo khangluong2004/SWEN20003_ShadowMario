@@ -2,23 +2,21 @@ package CollisionHandling;
 
 import GameEntities.CollisionInterface.Collidable;
 import GameEntities.GameEntity;
-import GameEntities.Characters.Player;
-import enums.GameEntityTypes;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 /**
  * The mediator class to control the collision between entities
  */
 public class CollisionMediator {
     // Keep a references of all entities in the scene owned it
-    private Map<GameEntityTypes, List<GameEntity>> entitiesByTypes;
+    private Set<GameEntity> allGameEntities;
     private List<CollisionDetector> collisionDetectors;
 
-    public CollisionMediator(Map<GameEntityTypes, List<GameEntity>> entitiesByTypes){
-        this.entitiesByTypes = entitiesByTypes;
+    public CollisionMediator(Set<GameEntity> allGameEntities){
+        this.allGameEntities = allGameEntities;
         this.collisionDetectors = new ArrayList<CollisionDetector>();
     }
 
@@ -56,16 +54,14 @@ public class CollisionMediator {
     }
 
     /***
-     * Convert the map to array of Collidable for easier collision handling
+     * Convert the map to array of Collidable and not deleted item for easier collision handling
      *
      */
     private List<Collidable> getCollidables(){
         List<Collidable> listAllCollidables = new ArrayList<>();
-        for (var entitiesEntry: entitiesByTypes.entrySet()){
-            for (GameEntity entity: entitiesEntry.getValue()){
-                if (entity instanceof Collidable){
-                    listAllCollidables.add((Collidable) entity);
-                }
+        for (GameEntity entity: allGameEntities){
+            if (!entity.isDeleted() && entity instanceof Collidable){
+                listAllCollidables.add((Collidable) entity);
             }
         }
         return listAllCollidables;

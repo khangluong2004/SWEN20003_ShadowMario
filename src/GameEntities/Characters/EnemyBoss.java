@@ -8,11 +8,12 @@ import bagel.Input;
 import bagel.util.Point;
 import enums.MoveDirection;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable, Collidable {
-    public EnemyBoss(List<Image> entityImages, int currentImageIndex, Point location) {
-        super(entityImages, currentImageIndex, location);
+    public EnemyBoss(Point location) {
+        super(new ArrayList<Image>(), 0, location);
     }
 
     @Override

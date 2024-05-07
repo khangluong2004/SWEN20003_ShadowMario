@@ -52,7 +52,7 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
 
     private GameStage gameStage;
 
-    // Powerup Manage
+    // Powerup Manager
     PowerUpManager powerUpManager;
     private Set<PowerUpItem> allPowerUpItems;
 
