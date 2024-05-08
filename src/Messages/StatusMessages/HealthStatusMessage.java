@@ -1,7 +1,7 @@
 package Messages.StatusMessages;
 
 import GameEntities.Characters.Killable;
-import GameEntities.StatusContainer;
+import GameEntities.Characters.StatusContainer;
 import GameProperties.MessageProps;
 import bagel.Font;
 import bagel.util.Colour;

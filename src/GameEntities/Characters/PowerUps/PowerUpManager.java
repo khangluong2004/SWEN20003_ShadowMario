@@ -5,10 +5,17 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
 
+/**
+ * Class for PowerUpManager, which handles the parsing, updating and removing
+ * powerups
+ */
 public class PowerUpManager {
     private Set<PowerUp> allPowerUps = new HashSet<PowerUp>();
+
+    /**
+     * Call update on all power ups and clean the expired one
+     */
     public void updatePerFrameAllPowerUp(){
-        // Call update on all power ups and clean the expired one
         List<PowerUp> expiredPowerUps = new ArrayList<>();
 
         for (var powerUp: allPowerUps){

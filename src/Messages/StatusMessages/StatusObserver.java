@@ -1,6 +1,6 @@
 package Messages.StatusMessages;
 
-import GameEntities.StatusContainer;
+import GameEntities.Characters.StatusContainer;
 
 /***
  * Use Observer pattern for health and score message

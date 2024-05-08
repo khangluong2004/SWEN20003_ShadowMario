@@ -6,7 +6,6 @@ import GameEntities.CollisionInterface.Collidable;
 import GameEntities.CollisionInterface.RadiusCollidable;
 import GameEntities.GameEntity;
 import GameEntities.Movable;
-import GameEntities.StatusContainer;
 import GameProperties.GameProps;
 import Scenes.PlayingScenes.PlayingScene;
 import bagel.Image;
@@ -53,6 +52,11 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
         this.frameSinceLastFire = 0;
     }
 
+    /**
+     * Update movement, delete if outside of window and increment the frame count
+     * for the next firing
+     * @param input
+     */
     @Override
     public void updatePerFrame(Input input) {
         // Check if outside the screen, then delete it
@@ -66,6 +70,10 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
         this.notifyObservers();
     }
 
+    /**
+     * Fire (Create) a fireball moving toward the target
+     * @param target
+     */
     @Override
     public void fire(GameEntity target) {
         // Can't fire if is dead
@@ -84,12 +92,19 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
         this.currentScene.addGameEntity(new FireBall(this.location, moveLeft, this, this.currentScene));
     }
 
-
+    /**
+     * Get the health of the boss
+     * @return
+     */
     @Override
     public double getHealth() {
         return this.health;
     }
 
+    /**
+     * Set the health and change to die speed if dead (health <= 0)
+     * @param newHealth
+     */
     private void setHealth(double newHealth){
         this.health = Math.max(newHealth, 0);
         if (this.health <= 0){
@@ -97,11 +112,19 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
         }
     }
 
+    /**
+     * Check if damageable
+     * @return
+     */
     @Override
     public boolean isDamageable() {
         return false;
     }
 
+    /**
+     * Check the type, and delegate collision handling to helper methods
+     * @param entity the entity that is collided with
+     */
     @Override
     public void startCollideWith(Collidable entity) {
         if (entity instanceof Player){
@@ -111,6 +134,10 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
         }
     }
 
+    /**
+     * Handle collision with player: Start firing randomly every 100 frames
+     * @param player
+     */
     private void handleCollision(Player player){
         if (frameSinceLastFire == 0){
             boolean firable = random.nextBoolean();
@@ -120,6 +147,10 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
         }
     }
 
+    /**
+     * Handle collision with fireball: If not the firer, then takes damage
+     * @param fireBall
+     */
     private void handleCollision(FireBall fireBall){
         if (fireBall.isFirer(this)){
             return;
@@ -128,6 +159,10 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
         this.setHealth(this.health + fireBall.getDamage(this));
     }
 
+    /**
+     * Move logic: relative to player and update velocity after death
+     * @param direction
+     */
     @Override
     public void move(MoveDirection direction) {
         if (direction == MoveDirection.LEFT){

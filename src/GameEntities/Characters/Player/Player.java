@@ -21,7 +21,7 @@ import GameEntities.Platforms.Platform;
 import GameEntities.Flags.EndFlag;
 
 
-import GameEntities.StatusContainer;
+import GameEntities.Characters.StatusContainer;
 import GameProperties.GameProps;
 import Scenes.PlayingScenes.PlayingScene;
 import bagel.*;
@@ -38,10 +38,9 @@ import java.util.Properties;
 import java.util.Set;
 
 /**
- * GameEntity.Characters.Player class, handling the changing image when the player is moving
- * left or right, jumping motion, losing motion and the score/ health display.
- * Collision side-effects, as explained in GameEntity.Movable interface, is handled by the different
- * entities that collide with GameEntity.Characters.Player (and not the GameEntity.Characters.Player itself), ensuring Open-Closed Principle (I hope)
+ * Player class, handling the changing image when the player is moving
+ * left or right, jumping motion, losing motion, collision side effects and status notifications for displays
+ *
  */
 public class Player extends GameEntity implements Movable, RadiusCollidable, Killable, Fireable, ScoreContainer, StatusContainer {
     // Images and constants
@@ -71,10 +70,14 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
     // Status observer
     Set<StatusObserver> observers;
 
-    // Previous platform location: To handle the silly requirements for not able to jump down
+    // Previous platform location: To handle the requirement for not able to jump down from higher flying platform
     Point previousPlatformLocation;
 
-
+    /**
+     * Create player and initialize key attributes
+     * @param location
+     * @param scene
+     */
     public Player(Point location, PlayingScene scene){
         super(new ArrayList<Image>(), 0, location, scene);
         Properties gameProps = GameProps.getGameProps();
@@ -100,6 +103,10 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         this.isFirable = false;
     }
 
+    /**
+     * Update per frame to update movement and power ups
+     * @param input
+     */
     @Override
     public void updatePerFrame(Input input){
         // Check if outside the bottom screen, then deleted
@@ -111,6 +118,7 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         // Update the power ups
         this.powerUpManager.updatePerFrameAllPowerUp();
 
+        // If not lost, then update move (and fire if possible)
         if (this.playerStage != PlayerStage.LOSING){
             updateMove(input);
             if (input.wasPressed(Keys.S) && isFirable){
@@ -124,9 +132,14 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
             move(MoveDirection.CONTINUE);
         }
 
+        // Notify statuses
         notifyObservers();
     }
 
+    /**
+     * Set health and game stage (also velocity and acceleration) if dead
+     * @param newHealth
+     */
     private void setHealth(double newHealth){
         this.health = Math.max(0, newHealth);
         if (this.health <= 0){
@@ -136,18 +149,34 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         }
     }
 
+    /**
+     * Get health
+     * @return
+     */
     public double getHealth(){
         return this.health;
     }
 
+    /**
+     * Get score
+     * @return
+     */
     public int getScore() {
         return score;
     }
 
+    /**
+     * Get player stage
+     * @return
+     */
     public PlayerStage getPlayerStage(){
         return this.playerStage;
     }
 
+    /**
+     * Check if is invincible or not (damageable)
+     * @return
+     */
     @Override
     public boolean isDamageable() {
         return !(powerUpManager.getPowerUpItems().contains(PowerUpItem.INVINCIBLE));
@@ -167,6 +196,10 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         lockJump = true;
     }
 
+    /**
+     * Handle jumping movement and changing image facing direction
+     * @param direction
+     */
     public void move(MoveDirection direction){
         if (direction == MoveDirection.UP){
             this.jump();
@@ -179,7 +212,10 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         }
     }
 
-
+    /**
+     * Handling collision, identify type of entity and delegate collision handling to appropriate helpers
+     * @param entity the entity that is collided with
+     */
     @Override
     public void startCollideWith(Collidable entity) {
         // Check if lost
@@ -208,6 +244,10 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         }
     }
 
+    /**
+     * Collision handling for enemy
+     * @param enemy
+     */
     private void handleCollisionEntity(Enemy enemy){
         // Down cast enemy and get the damage value
         // then change health (if first time collided)
@@ -218,6 +258,10 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         }
     }
 
+    /**
+     * Collision handling for platform
+     * @param platform
+     */
     private void handleCollisionEntity(Platform platform){
         // Stop jumping
         this.lockJump = false;
@@ -236,6 +280,10 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         this.previousPlatformLocation = platformLocation;
     }
 
+    /**
+     * Collision handling for flyingPlatform
+     * @param flyingPlatform
+     */
     private void handleCollisionEntity(FlyingPlatform flyingPlatform){
         // Check if jumping from a higher platform, then do nothing
         Point currentPlatformLocation = flyingPlatform.getLocation();
@@ -254,6 +302,10 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         this.previousPlatformLocation = currentPlatformLocation;
     }
 
+    /**
+     * Collision handling for coin
+     * @param coin
+     */
     private void handleCollisionEntity(Coin coin){
         // Downcast the coin, and change score if first time collided
         if (!coin.isPlayerCollided()){
@@ -265,18 +317,34 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         }
     }
 
+    /**
+     * Collision handling for double score
+     * @param doubleScore
+     */
     private void handleCollisionEntity(DoubleScorePower doubleScore){
         powerUpManager.addPowerUp(new TimedPowerUp(PowerUpItem.DOUBLE_SCORE, doubleScore.getDoubleScoreLastingFrames()));
     }
 
+    /**
+     * Collision handling for invincible
+     * @param invincible
+     */
     private void handleCollisionEntity(InvinciblePower invincible){
         powerUpManager.addPowerUp(new TimedPowerUp(PowerUpItem.INVINCIBLE, invincible.getInvincibleLastingFrames()));
     }
 
+    /**
+     * Collision handling for endFlag
+     * @param endFlag
+     */
     private void handleCollisionEntity(EndFlag endFlag){
         this.playerStage = PlayerStage.REACHED_FLAG;
     }
 
+    /**
+     * Collision handling for fireball
+     * @param fireBall
+     */
     private void handleCollisionEntity(FireBall fireBall){
         // Check if invincible, else change the health
         if (powerUpManager.getPowerUpItems().contains(PowerUpItem.INVINCIBLE)){
@@ -290,10 +358,19 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         this.setHealth(this.health + fireBall.getDamage(this));
     }
 
+    /**
+     * Collision handling for enemyBoss
+     * @param enemyBoss
+     */
     private void handleCollisionEntity(EnemyBoss enemyBoss){
         this.isFirable = true;
     }
 
+    /**
+     * Handling effects when get out of the collision of different entity
+     * For player, only endFlag and enemyBoss
+     * @param entity
+     */
     @Override
     public void outOfCollision(Collidable entity){
         if (entity instanceof EndFlag){
@@ -303,16 +380,24 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
                 this.playerStage = PlayerStage.PLAYING;
             }
         } else if (entity instanceof EnemyBoss){
-            // System.out.println("NOT Colliding with boss");
             this.isFirable = false;
         }
     }
 
+    /**
+     * Get the collision radius
+     * @param entity
+     * @return
+     */
     @Override
     public double getCollisionRadius(Collidable entity) {
         return this.RADIUS;
     }
 
+    /**
+     * Fire the fireball with the velocity moving in the direction facing by the characters
+     * @param target
+     */
     @Override
     public void fire(GameEntity target) {
         boolean moveLeft = true;
@@ -323,18 +408,27 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         this.currentScene.addGameEntity(new FireBall(this.location, moveLeft, this, this.currentScene));
     }
 
-
-
+    /**
+     * Add observer
+     * @param observer
+     */
     @Override
     public void addStatusObserver(StatusObserver observer) {
         observers.add(observer);
     }
 
+    /**
+     * Remove observer
+     * @param observer
+     */
     @Override
     public void removeObserver(StatusObserver observer) {
         observers.remove(observer);
     }
 
+    /**
+     * Notify observers
+     */
     @Override
     public void notifyObservers() {
         for (StatusObserver observer: observers){
