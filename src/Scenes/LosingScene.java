@@ -8,6 +8,9 @@ import utils.Message;
 
 import java.util.Properties;
 
+/**
+ * Implementation of Text Scene for LosingScene
+ */
 public class LosingScene extends TextScene{
 
     protected void loadScene() {

@@ -12,6 +12,9 @@ import utils.Message;
 
 import java.util.Properties;
 
+/**
+ * Initial scene which contains the instruction and title
+ */
 public class IntroductionScene extends TextScene{
     private int curLevel;
     /***
@@ -40,6 +43,11 @@ public class IntroductionScene extends TextScene{
         this.curLevel = -1;
     }
 
+    /**
+     * Update the internal storage of the next level based on input,
+     * and mark end scene if 1, 2 or 3 is pressed
+     * @param input
+     */
     @Override
     public void updateScene(Input input){
         isEnd = true;

@@ -7,6 +7,10 @@ import utils.Message;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The abstract class for all scenes with text only (Introduction, Winning and Losing scene).
+ * Used the factory method pattern.
+ */
 public abstract class TextScene implements Scene{
     protected boolean isEnd;
     protected List<Message> messages = new ArrayList<Message>();
@@ -15,9 +19,14 @@ public abstract class TextScene implements Scene{
         this.loadScene();
     }
 
-
+    /**
+     * Factory method which loads different message depends on the implementation
+     */
     protected void loadScene(){};
 
+    /**
+     * Draw the scene
+     */
     @Override
     public void drawScene() {
         for (Message message: messages){
@@ -25,6 +34,11 @@ public abstract class TextScene implements Scene{
         }
     }
 
+    /**
+     * Depends on the implementation. The default update is to end the scene when
+     * Space is pressed.
+     * @param input
+     */
     @Override
     public void updateScene(Input input) {
         if (input.isDown(Keys.SPACE)){
@@ -32,6 +46,10 @@ public abstract class TextScene implements Scene{
         }
     }
 
+    /**
+     * Check if the scene ends
+     * @return
+     */
     @Override
     public boolean isEnd() {
         return isEnd;

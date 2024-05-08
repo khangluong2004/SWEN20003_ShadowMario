@@ -8,6 +8,9 @@ import utils.Message;
 
 import java.util.Properties;
 
+/**
+ * Implementation of Text Scene for WinningScene
+ */
 public class WinningScene extends TextScene{
     protected void loadScene() {
         Properties messageProps = MessageProps.getMessageProps();

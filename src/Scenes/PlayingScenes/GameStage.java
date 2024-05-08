@@ -1,4 +1,4 @@
-package Scenes;
+package Scenes.PlayingScenes;
 
 public enum GameStage {
     WINNING,

@@ -8,6 +8,9 @@ import GameProperties.GameProps;
 
 import java.util.Properties;
 
+/**
+ * Implementation of Playing Scene for Level 3
+ */
 public class Level3 extends PlayingScene{
     @Override
     protected void loadScene() {

@@ -1,9 +1,6 @@
 package Scenes;
 
-import Scenes.PlayingScenes.Level1;
-import Scenes.PlayingScenes.Level2;
-import Scenes.PlayingScenes.Level3;
-import Scenes.PlayingScenes.PlayingScene;
+import Scenes.PlayingScenes.*;
 
 /***
  * Scene iterator: Handling the switching scenes
