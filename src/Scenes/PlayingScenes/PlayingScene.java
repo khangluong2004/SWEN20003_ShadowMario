@@ -13,7 +13,6 @@ import GameEntities.PickUpItems.InvinciblePower;
 import GameEntities.Platforms.FlyingPlatform;
 import GameEntities.Platforms.Platform;
 import GameProperties.GameProps;
-import Scenes.GameStage;
 import Scenes.Scene;
 import bagel.Input;
 import bagel.util.Colour;
@@ -26,8 +25,15 @@ import utils.StatusMessages.ScoreStatusMessage;
 
 import java.util.*;
 
+/**
+ * Class for the PlayingScene (where the user can play).
+ * Make use of Factory method pattern, with the loadScene and loadCollisionDetectors
+ * being the factory method(s) which will be overriden by specific Level to load appropriate objects
+ */
 public abstract class PlayingScene implements Scene {
     protected List<GameEntity> allGameEntities;
+    // Buffer for the added game entities, used to avoid interfering with the looping/ update process
+    protected List<GameEntity> bufferedEntities;
     protected List<Message> allMessages;
     protected CollisionMediator collisionMediator;
     private GameStage gameStage;
@@ -35,6 +41,7 @@ public abstract class PlayingScene implements Scene {
     public PlayingScene(){
         allMessages = new ArrayList<Message>();
         allGameEntities = new ArrayList<GameEntity>();
+        bufferedEntities = new ArrayList<GameEntity>();
         collisionMediator = new CollisionMediator(allGameEntities);
         this.gameStage = GameStage.PLAYING;
 
@@ -42,7 +49,20 @@ public abstract class PlayingScene implements Scene {
         this.loadCollisionDetectors();
     }
 
+    /**
+     * Factory method to loadScene based on each level implementation
+     */
+    protected abstract void loadScene();
 
+    /**
+     * Factory method to loadCollisionDetectors based on each level implementation
+     */
+    protected abstract void loadCollisionDetectors();
+
+    /**
+     * Load the game entities (and related messages) from the given csv
+     * @param filename name of the csv file
+     */
     protected void loadScene(String filename){
         Properties gameProps = GameProps.getGameProps();
         List<String[]> worldInfo = IOUtils.readCsv(filename);
@@ -93,7 +113,6 @@ public abstract class PlayingScene implements Scene {
                     currentEntity = new FlyingPlatform(location, this);
                     break;
                 case "ENEMY_BOSS":
-                    // TODO: Change the font class
                     // Create a status message for health
                     int bossHealthSize = Integer.parseInt(gameProps.getProperty("enemyBossHealth.fontSize"));
                     HealthStatusMessage healthBossStatusMessage = new HealthStatusMessage("",
@@ -102,6 +121,7 @@ public abstract class PlayingScene implements Scene {
                             Fonts.getFont(bossHealthSize), false, Colour.RED);
                     allMessages.add(healthBossStatusMessage);
 
+                    // Create the boss, add the message and update the message status
                     EnemyBoss enemyBoss = new EnemyBoss(location, this);
                     enemyBoss.addStatusObserver(healthBossStatusMessage);
                     enemyBoss.notifyObservers();
@@ -120,13 +140,28 @@ public abstract class PlayingScene implements Scene {
         }
     };
 
-    protected abstract void loadScene();
-    protected abstract void loadCollisionDetectors();
 
+    /**
+     * Methods to add game entity to a buffer, which will be added after the update to avoid interfere with
+     * updating process
+     * @param entity
+     */
     public void addGameEntity(GameEntity entity){
-        allGameEntities.add(entity);
+        bufferedEntities.add(entity);
     }
 
+    /**
+     * Flush the buffer to add all the added game entities to the list of allGameEntities
+     * after each update
+     */
+    protected void flushBuffer(){
+        allGameEntities.addAll(bufferedEntities);
+        bufferedEntities.clear();
+    }
+
+    /**
+     * Draw all gameEntities and message
+     */
     @Override
     public void drawScene() {
         for (GameEntity entity: allGameEntities){
@@ -138,15 +173,20 @@ public abstract class PlayingScene implements Scene {
         }
     }
 
+    /**
+     * Call the update method on all gameEntities, passing on the input as delegation
+     * @param input
+     */
     @Override
     public void updateScene(Input input) {
         cleanDeletedEntity();
-        // Create a clone so the update doesn't interfere with the looping
-        Set<GameEntity> allGameEntitiesCopy = new HashSet<>(this.allGameEntities);
         this.collisionMediator.handleCollision();
-        for (GameEntity entity: allGameEntitiesCopy){
+        for (GameEntity entity: allGameEntities){
             entity.updatePerFrame(input);
         }
+
+        // Flush the buffer to actually add game entities to the internal list
+        flushBuffer();
     }
 
 
@@ -160,14 +200,19 @@ public abstract class PlayingScene implements Scene {
         return this.gameStage;
     }
 
+    /**
+     * Check if the player wins this game, by checking for reaching flag (level 1 and 2)
+     * and no boss still exists (if any at the start)
+     * @return
+     */
     private boolean checkWinning(){
         if (this.gameStage == GameStage.WINNING){
             return true;
         }
 
         // The count that increments when player satisfied
-        // positive condition (eg: reaching flag) and decrements
-        // with negative condition (eg: boss is still alive)
+        // positive condition (reaching flag) and decrements
+        // with negative condition (boss is still alive)
         int conditionCount = 0;
 
         for (GameEntity entity: allGameEntities){
@@ -190,6 +235,11 @@ public abstract class PlayingScene implements Scene {
         return false;
     }
 
+    /**
+     * Check losing by checking if the player still exists in the scene
+     * (if the player lost and moved out of the window, it's deleted)
+     * @return
+     */
     private boolean checkLosing(){
         if (this.gameStage == GameStage.LOSING){
             return true;
@@ -206,7 +256,8 @@ public abstract class PlayingScene implements Scene {
     }
 
     /**
-     * Clean the deleted GameEntity to save space every update
+     * Clean the deleted GameEntity to save space every update,
+     * and simplify collision handling and losing/winning stage checking
      */
     protected void cleanDeletedEntity(){
         // Clean the deleted objects
@@ -217,10 +268,7 @@ public abstract class PlayingScene implements Scene {
             }
         }
 
-        for (GameEntity deletedEntity: deletedEntities){
-            allGameEntities.remove(deletedEntity);
-        }
-
+        allGameEntities.removeAll(deletedEntities);
         collisionMediator.removeDeletedCollision(deletedEntities);
     }
 
