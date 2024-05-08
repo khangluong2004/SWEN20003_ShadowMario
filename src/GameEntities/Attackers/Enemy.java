@@ -19,8 +19,8 @@ import java.util.Properties;
 import java.util.Random;
 
 /**
- * Class for enemy entity, inherits from GameEntity.EuclideanCollidableMovableEntity,
- * with overidden collision handling methods and reset attributes
+ * Class for enemy entity, with the added random movement
+ *
  */
 public class Enemy extends GameEntity implements RadiusCollidable, Movable, Attacker {
     private final double RADIUS;
@@ -66,7 +66,8 @@ public class Enemy extends GameEntity implements RadiusCollidable, Movable, Atta
     }
 
     /**
-     * Common updateLocation for LEFT/RIGHT movements for all movable objects
+     * Common updateLocation for LEFT/RIGHT movements for all movable objects,
+     * plus the random displacement around the starting point
      * @param direction the direction from the key pressed by the user
      */
     @Override
@@ -76,6 +77,8 @@ public class Enemy extends GameEntity implements RadiusCollidable, Movable, Atta
         } else if (direction == MoveDirection.RIGHT){
             this.location = new Point(location.x - STEP_SIZE, location.y);
         } else if (direction == MoveDirection.CONTINUE){
+            // Keep track of the total displacement from the start,
+            // and flip direction after reaching max displacement
             this.randomDisplacement += velocity;
             if (Math.abs(randomDisplacement) >= MAX_DISPLACEMENT){
                 this.velocity = -1 * this.velocity;
@@ -85,24 +88,26 @@ public class Enemy extends GameEntity implements RadiusCollidable, Movable, Atta
         }
     }
 
+    /**
+     * Get the damage size
+     * @param entity
+     * @return
+     */
     @Override
     public double getDamage(GameEntity entity){
         return DAMAGE_SIZE;
     }
 
+    /**
+     * Get if inflictedDamage to the player or not
+     * @return
+     */
     public boolean isInflictedDamage(){
         return inflictedDamage;
     }
 
     /**
-     * Handling side-effect during collision with other entity
-     * @param entity
-     */
-    @Override
-    public void startCollideWith(Collidable entity) {}
-
-    /**
-     * Handling side-effect after collision with other entity
+     * Handling side-effect after collision with other entity (player)
      * @param entity the entity that is collided with
      */
     @Override

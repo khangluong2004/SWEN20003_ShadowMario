@@ -26,8 +26,8 @@ public class FireBall extends GameEntity implements Movable, Attacker, RadiusCol
     private final double RADIUS;
     private final int LOWER_BOUNDARY;
     private final int UPPER_BOUNDARY;
-    private Fireable firer;
-    private int velocity;
+    private final Fireable firer;
+    private final int velocity;
 
     public FireBall(Point location, boolean moveLeft, Fireable firer, PlayingScene scene){
         super(new ArrayList<Image>(), 0, location, scene);
@@ -71,20 +71,23 @@ public class FireBall extends GameEntity implements Movable, Attacker, RadiusCol
         return entity == firer;
     }
 
-    @Override
-    public void startCollideWith(Collidable entity) {
-
-    }
-
+    /**
+     * Delete the fireball after collision with any Killable except
+     * the firer
+     * @param entity the entity that is collided with
+     */
     @Override
     public void endCollideWith(Collidable entity) {
-        // Delete the fireball after collision with any Killable except
-        // the firer
         if (!this.isFirer(entity) && entity instanceof Killable){
             isDeleted = true;
         }
     }
 
+
+    /**
+     * Move relative to the player, and continue its horizontal movement
+     * @param direction
+     */
     @Override
     public void move(MoveDirection direction) {
         if (isDeleted){
@@ -109,6 +112,8 @@ public class FireBall extends GameEntity implements Movable, Attacker, RadiusCol
 
     /**
      * Check if the fireball is out of screen and should be deleted
+     * Take into account the direction of the fireball (eg: If it's fired
+     * from the left, then only delete when it passes the right boundary)
      * @return
      */
     private boolean checkReachBoundary(){
@@ -116,6 +121,11 @@ public class FireBall extends GameEntity implements Movable, Attacker, RadiusCol
                 || (velocity > 0 && this.location.x >= UPPER_BOUNDARY));
     }
 
+    /**
+     * Get Collision radius
+     * @param entity
+     * @return
+     */
     @Override
     public double getCollisionRadius(Collidable entity) {
         return RADIUS;
