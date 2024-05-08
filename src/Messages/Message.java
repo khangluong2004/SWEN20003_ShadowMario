@@ -1,4 +1,4 @@
-package utils;
+package Messages;
 
 import bagel.DrawOptions;
 import bagel.Font;
@@ -6,7 +6,7 @@ import bagel.util.Colour;
 import bagel.util.Point;
 
 /**
- * utils.Message class for message objects
+ * Messages.Message class for message objects
  * to handle drawing font at specified locations
  */
 public class Message {

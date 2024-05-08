@@ -1,4 +1,4 @@
-package utils.StatusMessages;
+package Messages.StatusMessages;
 
 import GameEntities.Characters.Killable;
 import GameEntities.StatusContainer;
@@ -6,7 +6,7 @@ import GameProperties.MessageProps;
 import bagel.Font;
 import bagel.util.Colour;
 import bagel.util.Point;
-import utils.Message;
+import Messages.Message;
 import utils.PercentageUtils;
 
 import java.util.Properties;

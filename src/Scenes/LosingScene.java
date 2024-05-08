@@ -4,7 +4,7 @@ import GameProperties.GameProps;
 import GameProperties.MessageProps;
 import bagel.util.Point;
 import utils.Fonts;
-import utils.Message;
+import Messages.Message;
 
 import java.util.Properties;
 

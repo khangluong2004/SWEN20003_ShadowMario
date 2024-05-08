@@ -2,7 +2,7 @@ package Scenes;
 
 import bagel.Input;
 import bagel.Keys;
-import utils.Message;
+import Messages.Message;
 
 import java.util.ArrayList;
 import java.util.List;

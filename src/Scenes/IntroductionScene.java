@@ -2,13 +2,11 @@ package Scenes;
 
 import GameProperties.GameProps;
 import GameProperties.MessageProps;
-import bagel.Font;
 import utils.Fonts;
-import utils.Message;
+import Messages.Message;
 import bagel.Input;
 import bagel.Keys;
 import bagel.util.Point;
-import utils.Message;
 
 import java.util.Properties;
 

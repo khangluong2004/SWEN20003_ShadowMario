@@ -1,4 +1,4 @@
-package utils.StatusMessages;
+package Messages.StatusMessages;
 
 import GameEntities.StatusContainer;
 

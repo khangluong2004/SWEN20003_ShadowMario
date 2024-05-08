@@ -1,7 +1,7 @@
 package GameEntities;
 
 
-import utils.StatusMessages.StatusObserver;
+import Messages.StatusMessages.StatusObserver;
 
 public interface StatusContainer {
     void addStatusObserver(StatusObserver observer);

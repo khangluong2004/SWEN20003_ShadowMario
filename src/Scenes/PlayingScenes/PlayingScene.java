@@ -19,9 +19,9 @@ import bagel.util.Colour;
 import bagel.util.Point;
 import utils.Fonts;
 import utils.IOUtils;
-import utils.Message;
-import utils.StatusMessages.HealthStatusMessage;
-import utils.StatusMessages.ScoreStatusMessage;
+import Messages.Message;
+import Messages.StatusMessages.HealthStatusMessage;
+import Messages.StatusMessages.ScoreStatusMessage;
 
 import java.util.*;
 

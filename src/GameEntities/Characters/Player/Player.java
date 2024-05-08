@@ -29,7 +29,7 @@ import bagel.util.Point;
 
 import GameEntities.MoveDirection;
 import GameEntities.Characters.PowerUps.PowerUpItem;
-import utils.StatusMessages.StatusObserver;
+import Messages.StatusMessages.StatusObserver;
 
 
 import java.util.ArrayList;
