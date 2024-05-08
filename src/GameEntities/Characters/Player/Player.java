@@ -297,8 +297,13 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
     @Override
     public void outOfCollision(Collidable entity){
         if (entity instanceof EndFlag){
-            this.playerStage = PlayerStage.PLAYING;
+            if (this.health <= 0){
+                this.playerStage = PlayerStage.LOSING;
+            } else {
+                this.playerStage = PlayerStage.PLAYING;
+            }
         } else if (entity instanceof EnemyBoss){
+            // System.out.println("NOT Colliding with boss");
             this.isFirable = false;
         }
     }

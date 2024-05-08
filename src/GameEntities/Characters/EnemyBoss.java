@@ -65,6 +65,11 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
 
     @Override
     public void fire(GameEntity target) {
+        // Can't fire if is dead
+        if (this.health <= 0){
+            return;
+        }
+
         boolean moveLeft = true;
         Point targetLocation = target.getLocation();
         Point firerLocation = this.location;

@@ -11,12 +11,12 @@ import java.util.Properties;
 public class PlayerEnemyBossCollisionDetector implements CollisionDetector{
 
     @Override
-    public boolean checkCollision(Collidable entity1, Collidable entity2) {
+    public CollisionType checkCollision(Collidable entity1, Collidable entity2) {
         if (!(entity1 instanceof Player && entity2 instanceof EnemyBoss)){
-            return false;
+            return CollisionType.NOT_COMPATIBLE;
         }
 
-        return checkCollision((Player) entity1, (EnemyBoss) entity2);
+        return checkCollision((Player) entity1, (EnemyBoss) entity2) ? CollisionType.COLLIDED: CollisionType.NOT_COLLIDED;
     }
 
     private boolean checkCollision(Player player, EnemyBoss enemyBoss){

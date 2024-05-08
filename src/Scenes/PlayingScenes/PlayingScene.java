@@ -215,6 +215,8 @@ public abstract class PlayingScene implements Scene {
         for (GameEntity deletedEntity: deletedEntities){
             allGameEntities.remove(deletedEntity);
         }
+
+        collisionMediator.removeDeletedCollision(deletedEntities);
     }
 
 

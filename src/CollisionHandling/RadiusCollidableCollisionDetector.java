@@ -7,12 +7,14 @@ import bagel.util.Point;
 
 public class RadiusCollidableCollisionDetector implements CollisionDetector{
     @Override
-    public boolean checkCollision(Collidable entity1, Collidable entity2) {
+    public CollisionType checkCollision(Collidable entity1, Collidable entity2) {
         if (!(entity1 instanceof RadiusCollidable && entity2 instanceof RadiusCollidable)){
-            return false;
+            return CollisionType.NOT_COMPATIBLE;
         }
 
-        return checkCollision((RadiusCollidable) entity1, (RadiusCollidable) entity2);
+        return checkCollision((RadiusCollidable) entity1, (RadiusCollidable) entity2)
+                ? CollisionType.COLLIDED
+                : CollisionType.NOT_COLLIDED;
     }
 
     private boolean checkCollision(RadiusCollidable radiusEntity1, RadiusCollidable radiusEntity2){

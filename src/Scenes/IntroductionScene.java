@@ -26,8 +26,9 @@ public class IntroductionScene extends TextScene{
 
         int windowWidth = Integer.parseInt(gameProps.getProperty("windowWidth"));
 
+        int titleSize = Integer.parseInt()
         Message title = new Message(messageProps.getProperty("title"), new Point(Integer.parseInt(gameProps.getProperty("title.x")),
-                Integer.parseInt(gameProps.getProperty("title.y"))), Fonts.getLargeFont(), false);
+                Integer.parseInt(gameProps.getProperty("title.y"))), Fonts.getFont(), false);
         Message instruction = new Message(messageProps.getProperty("instruction"), new Point(windowWidth * 1.0/2,
                 Integer.parseInt(gameProps.getProperty("instruction.y"))), Fonts.getSmallFont(), true);
 
