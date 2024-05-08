@@ -14,10 +14,13 @@ import bagel.Input;
 import bagel.Window;
 import bagel.util.Point;
 import GameEntities.MoveDirection;
-import utils.StatusMessages.StatusObserver;
+import Messages.StatusMessages.StatusObserver;
 
 import java.util.*;
 
+/**
+ * Class for the EnemyBoss, which can move, fire, be killed, collided and contains status to be displayed
+ */
 public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable, RadiusCollidable, StatusContainer {
     private final int STEP_SIZE;
     private final int DIE_SPEED;
@@ -52,7 +55,7 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
 
     @Override
     public void updatePerFrame(Input input) {
-        // Check if outside the bottom screen, then deleted
+        // Check if outside the screen, then delete it
         if (this.location.y > Window.getHeight()){
             this.isDeleted = true;
             return;
