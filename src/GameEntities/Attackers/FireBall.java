@@ -11,11 +11,14 @@ import Scenes.PlayingScenes.PlayingScene;
 import bagel.Image;
 import bagel.Input;
 import bagel.util.Point;
-import enums.MoveDirection;
+import GameEntities.MoveDirection;
 
 import java.util.ArrayList;
 import java.util.Properties;
 
+/**
+ * Class for FireBall
+ */
 public class FireBall extends GameEntity implements Movable, Attacker, RadiusCollidable {
     private final double DAMAGE_SIZE;
     private final int FIRE_STEP_SIZE;
@@ -57,6 +60,11 @@ public class FireBall extends GameEntity implements Movable, Attacker, RadiusCol
         return DAMAGE_SIZE;
     }
 
+    /**
+     * Test if the entity is a firer (so don't deal damage)
+     * @param entity
+     * @return
+     */
     public boolean isFirer(Collidable entity){
         // Use equality operators, since we actually want to check
         // if the 2 instances are the exact same instances
@@ -99,8 +107,13 @@ public class FireBall extends GameEntity implements Movable, Attacker, RadiusCol
         }
     }
 
+    /**
+     * Check if the fireball is out of screen and should be deleted
+     * @return
+     */
     private boolean checkReachBoundary(){
-        return (this.location.x <= LOWER_BOUNDARY || this.location.x >= UPPER_BOUNDARY);
+        return ((velocity < 0 && this.location.x <= LOWER_BOUNDARY)
+                || (velocity > 0 && this.location.x >= UPPER_BOUNDARY));
     }
 
     @Override

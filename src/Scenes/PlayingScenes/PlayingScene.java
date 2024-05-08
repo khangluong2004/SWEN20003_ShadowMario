@@ -3,7 +3,8 @@ package Scenes.PlayingScenes;
 import CollisionHandling.CollisionMediator;
 import GameEntities.Attackers.Enemy;
 import GameEntities.Characters.EnemyBoss;
-import GameEntities.Characters.Player;
+import GameEntities.Characters.Player.Player;
+import GameEntities.Characters.Player.PlayerStage;
 import GameEntities.Flags.EndFlag;
 import GameEntities.GameEntity;
 import GameEntities.PickUpItems.Coin;
@@ -12,31 +13,30 @@ import GameEntities.PickUpItems.InvinciblePower;
 import GameEntities.Platforms.FlyingPlatform;
 import GameEntities.Platforms.Platform;
 import GameProperties.GameProps;
+import Scenes.GameStage;
 import Scenes.Scene;
 import bagel.Input;
 import bagel.util.Point;
-import enums.GameStage;
 import utils.Fonts;
 import utils.IOUtils;
 import utils.Message;
 import utils.StatusMessages.HealthStatusMessage;
 import utils.StatusMessages.ScoreStatusMessage;
-import utils.StatusMessages.StatusObserver;
 
 import java.util.*;
 
 public abstract class PlayingScene implements Scene {
-    protected GameStage gameStage;
-    protected Set<GameEntity> allGameEntities;
+    protected List<GameEntity> allGameEntities;
     protected List<Message> allMessages;
     protected CollisionMediator collisionMediator;
+    private GameStage gameStage;
 
     public PlayingScene(){
         allMessages = new ArrayList<Message>();
-        allGameEntities = new HashSet<GameEntity>();
+        allGameEntities = new ArrayList<GameEntity>();
         collisionMediator = new CollisionMediator(allGameEntities);
-
         this.gameStage = GameStage.PLAYING;
+
         this.loadScene();
         this.loadCollisionDetectors();
     }
@@ -144,31 +144,59 @@ public abstract class PlayingScene implements Scene {
         }
     }
 
-    public GameStage getGameStage(){
-        return this.gameStage;
-    }
-
 
     @Override
     public boolean isEnd() {
-        // Check if all players finish losing or winning
-        for (GameEntity entity: allGameEntities){
-            // Test of the
-            if (!(entity instanceof Player)){
-                continue;
-            }
+        return checkWinning() || checkLosing();
+    }
 
-            Player player = (Player) entity;
-            GameStage endingStage = player.getEndingStage();
-            if (endingStage == GameStage.FINISH_LOSING){
-                this.gameStage = GameStage.FINISH_LOSING;
-            } else if (endingStage == GameStage.WINNING){
-                this.gameStage = GameStage.WINNING;
-            } else {
-                this.gameStage = GameStage.PLAYING;
+    public GameStage getGameStage(){
+        this.isEnd();
+        return this.gameStage;
+    }
+
+    private boolean checkWinning(){
+        if (this.gameStage == GameStage.WINNING){
+            return true;
+        }
+
+        // The count that increments when player satisfied
+        // positive condition (eg: reaching flag) and decrements
+        // with negative condition (eg: boss is still alive)
+        int conditionCount = 0;
+
+        for (GameEntity entity: allGameEntities){
+            if (entity instanceof Player){
+                Player player = (Player) entity;
+                if (player.getPlayerStage() == PlayerStage.REACHED_FLAG){
+                    conditionCount++;
+                }
+            } else if (entity instanceof EnemyBoss){
+                // If the boss exist, then decrement the count
+                conditionCount--;
+            }
+        }
+
+        if (conditionCount == 1){
+            this.gameStage = GameStage.WINNING;
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean checkLosing(){
+        if (this.gameStage == GameStage.LOSING){
+            return true;
+        }
+
+        for (GameEntity entity: allGameEntities){
+            if (entity instanceof Player){
                 return false;
             }
         }
+
+        this.gameStage = GameStage.LOSING;
         return true;
     }
 

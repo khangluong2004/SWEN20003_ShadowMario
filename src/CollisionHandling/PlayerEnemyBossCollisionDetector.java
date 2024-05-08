@@ -1,7 +1,7 @@
 package CollisionHandling;
 
 import GameEntities.Characters.EnemyBoss;
-import GameEntities.Characters.Player;
+import GameEntities.Characters.Player.Player;
 import GameEntities.CollisionInterface.Collidable;
 import GameProperties.GameProps;
 import bagel.util.Point;
@@ -24,7 +24,9 @@ public class PlayerEnemyBossCollisionDetector implements CollisionDetector{
         Point playerLocation = player.getLocation();
         Point bossLocation = enemyBoss.getLocation();
 
-        if (Math.abs(playerLocation.x - bossLocation.x) <= Integer.parseInt(gameProps.getProperty("gameObjects.enemyBoss.activationRadius"))){
+        int range = Integer.parseInt(gameProps.getProperty("gameObjects.enemyBoss.activationRadius"));
+
+        if (Math.abs(playerLocation.x - bossLocation.x) <= range){
             return true;
         }
 

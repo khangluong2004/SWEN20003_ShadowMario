@@ -1,9 +1,7 @@
 package CollisionHandling;
 
-import GameEntities.Characters.Player;
+import GameEntities.Characters.Player.Player;
 import GameEntities.CollisionInterface.Collidable;
-import GameEntities.CollisionInterface.RadiusCollidable;
-import GameEntities.GameEntity;
 import GameEntities.Platforms.Platform;
 import bagel.util.Point;
 

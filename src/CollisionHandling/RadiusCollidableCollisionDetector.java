@@ -1,6 +1,5 @@
 package CollisionHandling;
 
-import GameEntities.Characters.Player;
 import GameEntities.CollisionInterface.Collidable;
 import GameEntities.CollisionInterface.RadiusCollidable;
 import GameEntities.GameEntity;

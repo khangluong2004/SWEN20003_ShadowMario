@@ -12,11 +12,11 @@ import java.util.Set;
  */
 public class CollisionMediator {
     // Keep a references of all entities in the scene owned it
-    private Set<GameEntity> allGameEntities;
+    private List<GameEntity> allGameEntities;
     private List<CollisionDetector> collisionDetectors;
 
 
-    public CollisionMediator(Set<GameEntity> allGameEntities){
+    public CollisionMediator(List<GameEntity> allGameEntities){
         this.allGameEntities = allGameEntities;
         this.collisionDetectors = new ArrayList<CollisionDetector>();
     }
@@ -48,6 +48,9 @@ public class CollisionMediator {
                         entity2.startCollideWith(entity1);
                         entity1.endCollideWith(entity2);
                         entity2.endCollideWith(entity1);
+                    } else {
+                        entity1.outOfCollision(entity2);
+                        entity2.outOfCollision(entity1);
                     }
                 }
             }

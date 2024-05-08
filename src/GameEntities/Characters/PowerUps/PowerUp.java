@@ -1,7 +1,5 @@
 package GameEntities.Characters.PowerUps;
 
-import enums.PowerUpItem;
-
 public abstract class PowerUp {
     protected PowerUpItem powerUpItem;
 

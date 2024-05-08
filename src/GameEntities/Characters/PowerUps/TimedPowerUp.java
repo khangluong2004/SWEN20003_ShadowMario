@@ -1,7 +1,5 @@
 package GameEntities.Characters.PowerUps;
 
-import enums.PowerUpItem;
-
 public class TimedPowerUp extends PowerUp{
     private int LASTING_FRAMES;
     private int frameSinceStart;

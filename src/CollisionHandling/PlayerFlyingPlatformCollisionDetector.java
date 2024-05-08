@@ -1,6 +1,6 @@
 package CollisionHandling;
 
-import GameEntities.Characters.Player;
+import GameEntities.Characters.Player.Player;
 import GameEntities.CollisionInterface.Collidable;
 import GameEntities.Platforms.FlyingPlatform;
 import GameProperties.GameProps;

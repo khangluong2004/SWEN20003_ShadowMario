@@ -9,7 +9,7 @@ import Scenes.PlayingScenes.PlayingScene;
 import bagel.Image;
 import bagel.Input;
 import bagel.util.Point;
-import enums.MoveDirection;
+import GameEntities.MoveDirection;
 
 import java.util.ArrayList;
 import java.util.Properties;
@@ -73,21 +73,4 @@ public class FlyingPlatform extends GameEntity implements Movable, Collidable {
             this.location = new Point(location.x + velocity, location.y);
         }
     }
-
-
-
-
-    /**
-     * Handling side-effect during collision with other entity
-     * @param entity
-     */
-    @Override
-    public void startCollideWith(Collidable entity) {}
-
-    /**
-     * Handling side-effect after collision with other entity
-     * @param entity the entity that is collided with
-     */
-    @Override
-    public void endCollideWith(Collidable entity) {}
 }

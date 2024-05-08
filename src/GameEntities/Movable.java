@@ -2,7 +2,6 @@ package GameEntities;
 
 import bagel.Input;
 import bagel.Keys;
-import enums.MoveDirection;
 
 /**
  * Interface for all movable objects

@@ -11,7 +11,7 @@ import Scenes.PlayingScenes.PlayingScene;
 import bagel.Image;
 import bagel.Input;
 import bagel.util.Point;
-import enums.MoveDirection;
+import GameEntities.MoveDirection;
 
 import java.util.ArrayList;
 import java.util.Properties;
@@ -41,12 +41,6 @@ public class EndFlag extends GameEntity implements RadiusCollidable, Movable {
         updateMove(input);
     }
 
-
-    @Override
-    public void startCollideWith(Collidable entity) {}
-
-    @Override
-    public void endCollideWith(Collidable entity) {}
 
     /**
      * Get the collision radius of the object

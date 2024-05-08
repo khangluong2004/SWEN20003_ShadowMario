@@ -1,8 +1,12 @@
-package GameEntities.Characters;
+package GameEntities.Characters.Player;
 
 import GameEntities.Attackers.FireBall;
+import GameEntities.Characters.EnemyBoss;
+import GameEntities.Characters.Fireable;
+import GameEntities.Characters.Killable;
 import GameEntities.Characters.PowerUps.PowerUpManager;
 import GameEntities.Characters.PowerUps.TimedPowerUp;
+import GameEntities.Characters.ScoreContainer;
 import GameEntities.CollisionInterface.Collidable;
 import GameEntities.CollisionInterface.RadiusCollidable;
 import GameEntities.GameEntity;
@@ -23,9 +27,8 @@ import Scenes.PlayingScenes.PlayingScene;
 import bagel.*;
 import bagel.util.Point;
 
-import enums.GameStage;
-import enums.MoveDirection;
-import enums.PowerUpItem;
+import GameEntities.MoveDirection;
+import GameEntities.Characters.PowerUps.PowerUpItem;
 import utils.StatusMessages.StatusObserver;
 
 
@@ -58,7 +61,9 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
     // Boolean to check if in range to fire
     private boolean isFirable;
 
-    private GameStage gameStage;
+    // Stage management
+    private PlayerStage playerStage;
+
 
     // Powerup Manager
     PowerUpManager powerUpManager;
@@ -90,38 +95,42 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
         this.score = 0;
         this.setHealth(Double.parseDouble(gameProps.getProperty("gameObjects.player.health")));
         this.lockJump = false;
-        this.gameStage = GameStage.PLAYING;
+        this.playerStage = PlayerStage.PLAYING;
         this.previousPlatformLocation = new Point(0.0, 0.0);
         this.isFirable = false;
     }
 
     @Override
     public void updatePerFrame(Input input){
+        // Check if outside the bottom screen, then deleted
+        if (this.location.y > Window.getHeight()){
+            this.isDeleted = true;
+            return;
+        }
+
         // Update the power ups
         this.powerUpManager.updatePerFrameAllPowerUp();
 
-        if (this.gameStage == GameStage.PLAYING){
+        if (this.playerStage != PlayerStage.LOSING){
             updateMove(input);
-            if (input.isDown(Keys.S) && isFirable){
+            if (input.wasPressed(Keys.S) && isFirable){
                 this.fire(null);
             }
+
+            // Set jump acceleration always to simulate gravity
+            this.velocity += JUMP_ACCELERATION;
         } else {
             // If lost, then just continue the downward movement
             move(MoveDirection.CONTINUE);
         }
 
         notifyObservers();
-
-        // Set jump acceleration always to simulate gravity
-        this.velocity += JUMP_ACCELERATION;
-        // Reset isFirable, so it's only set when in range with boss
-        this.isFirable = false;
     }
 
     private void setHealth(double newHealth){
         this.health = Math.max(0, newHealth);
         if (this.health <= 0){
-            this.gameStage = GameStage.START_LOSING;
+            this.playerStage = PlayerStage.LOSING;
             this.lockJump = false; // Remove any jumping acceleration when dead
             this.velocity = DIE_SPEED;
         }
@@ -133,6 +142,10 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
 
     public int getScore() {
         return score;
+    }
+
+    public PlayerStage getPlayerStage(){
+        return this.playerStage;
     }
 
     @Override
@@ -163,26 +176,14 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
             this.currentImageIndex = 0;
         } else if (direction == MoveDirection.CONTINUE){
             location = new Point(location.x, location.y + velocity);
-
-            // Handling losing movement
-            // Change state to finish losing when the player is out of the screen
-            if (this.gameStage == GameStage.START_LOSING){
-                if (location.y > Window.getHeight()){
-                    this.gameStage = GameStage.FINISH_LOSING;
-                }
-            }
         }
-    }
-
-    public GameStage getEndingStage(){
-        return gameStage;
     }
 
 
     @Override
     public void startCollideWith(Collidable entity) {
         // Check if lost
-        if (this.gameStage != GameStage.PLAYING){
+        if (this.playerStage == PlayerStage.LOSING){
             return;
         }
 
@@ -273,9 +274,7 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
     }
 
     private void handleCollisionEntity(EndFlag endFlag){
-        // TODO: Fix this. Delegate winning decision to the scene.
-        // Set winning stage
-        this.gameStage = GameStage.WINNING;
+        this.playerStage = PlayerStage.REACHED_FLAG;
     }
 
     private void handleCollisionEntity(FireBall fireBall){
@@ -296,7 +295,13 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
     }
 
     @Override
-    public void endCollideWith(Collidable entity) {}
+    public void outOfCollision(Collidable entity){
+        if (entity instanceof EndFlag){
+            this.playerStage = PlayerStage.PLAYING;
+        } else if (entity instanceof EnemyBoss){
+            this.isFirable = false;
+        }
+    }
 
     @Override
     public double getCollisionRadius(Collidable entity) {

@@ -1,7 +1,5 @@
 package GameEntities.Characters.PowerUps;
 
-import enums.PowerUpItem;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;

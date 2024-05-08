@@ -10,7 +10,8 @@ import java.util.List;
 /**
  * The abstract class that all game entities should inherit,
  * containing methods to get the location, img's attributes,
- * and reset attributes method (to replay games)
+ * and reset attributes method (to replay games).
+ *
  */
 public abstract class GameEntity {
     protected List<Image> entityImages;
@@ -18,6 +19,7 @@ public abstract class GameEntity {
     protected Point location;
     protected boolean isDeleted;
     protected PlayingScene currentScene;
+
 
     public GameEntity(List<Image> entityImages, int currentImageIndex, Point location, PlayingScene scene){
         this.entityImages = entityImages;

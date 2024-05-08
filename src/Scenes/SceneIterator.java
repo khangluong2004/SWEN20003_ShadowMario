@@ -4,7 +4,6 @@ import Scenes.PlayingScenes.Level1;
 import Scenes.PlayingScenes.Level2;
 import Scenes.PlayingScenes.Level3;
 import Scenes.PlayingScenes.PlayingScene;
-import enums.GameStage;
 
 /***
  * Scene iterator: Handling the switching scenes
@@ -31,7 +30,6 @@ public class SceneIterator {
         if (currentScene instanceof IntroductionScene){
             IntroductionScene currentScene = (IntroductionScene) this.currentScene;
             int curLevel = currentScene.getNextLevel();
-            System.out.println(curLevel);
             switch (curLevel){
                 case 1:
                     this.currentScene = new Level1();
@@ -47,7 +45,7 @@ public class SceneIterator {
             PlayingScene currentScene = (PlayingScene) this.currentScene;
             if (currentScene.getGameStage() == GameStage.WINNING){
                 this.currentScene = new WinningScene();
-            } else if (currentScene.getGameStage() == GameStage.FINISH_LOSING){
+            } else if (currentScene.getGameStage() == GameStage.LOSING){
                 this.currentScene = new LosingScene();
             }
         } else {

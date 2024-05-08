@@ -1,6 +1,6 @@
 package GameEntities.PickUpItems;
 
-import GameEntities.Characters.Player;
+import GameEntities.Characters.Player.Player;
 import GameEntities.CollisionInterface.Collidable;
 import GameEntities.GameEntity;
 import GameEntities.CollisionInterface.RadiusCollidable;
@@ -10,7 +10,7 @@ import Scenes.PlayingScenes.PlayingScene;
 import bagel.Image;
 import bagel.Input;
 import bagel.util.Point;
-import enums.MoveDirection;
+import GameEntities.MoveDirection;
 
 import java.util.List;
 
@@ -36,8 +36,6 @@ public abstract class PickupItem extends GameEntity implements Movable, RadiusCo
         updateMove(input);
     }
 
-    @Override
-    public void startCollideWith(Collidable entity) {}
 
     /**
      * Override the behaviour after collision with player.

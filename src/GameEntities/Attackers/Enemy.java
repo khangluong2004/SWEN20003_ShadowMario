@@ -1,7 +1,7 @@
 package GameEntities.Attackers;
 
 
-import GameEntities.Characters.Player;
+import GameEntities.Characters.Player.Player;
 import GameEntities.CollisionInterface.Collidable;
 import GameEntities.CollisionInterface.RadiusCollidable;
 import GameEntities.GameEntity;
@@ -12,7 +12,7 @@ import Scenes.PlayingScenes.PlayingScene;
 import bagel.Image;
 import bagel.Input;
 import bagel.util.Point;
-import enums.MoveDirection;
+import GameEntities.MoveDirection;
 
 import java.util.ArrayList;
 import java.util.Properties;

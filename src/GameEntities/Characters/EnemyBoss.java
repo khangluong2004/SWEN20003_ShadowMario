@@ -1,6 +1,7 @@
 package GameEntities.Characters;
 
 import GameEntities.Attackers.FireBall;
+import GameEntities.Characters.Player.Player;
 import GameEntities.CollisionInterface.Collidable;
 import GameEntities.CollisionInterface.RadiusCollidable;
 import GameEntities.GameEntity;
@@ -10,8 +11,9 @@ import GameProperties.GameProps;
 import Scenes.PlayingScenes.PlayingScene;
 import bagel.Image;
 import bagel.Input;
+import bagel.Window;
 import bagel.util.Point;
-import enums.MoveDirection;
+import GameEntities.MoveDirection;
 import utils.StatusMessages.StatusObserver;
 
 import java.util.*;
@@ -50,6 +52,12 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
 
     @Override
     public void updatePerFrame(Input input) {
+        // Check if outside the bottom screen, then deleted
+        if (this.location.y > Window.getHeight()){
+            this.isDeleted = true;
+            return;
+        }
+
         updateMove(input);
         this.frameSinceLastFire = (this.frameSinceLastFire + 1) % FRAME_UNTIL_NEXT_FIRE;
         this.notifyObservers();
@@ -110,11 +118,6 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
         }
 
         this.setHealth(this.health + fireBall.getDamage(this));
-    }
-
-    @Override
-    public void endCollideWith(Collidable entity) {
-
     }
 
     @Override

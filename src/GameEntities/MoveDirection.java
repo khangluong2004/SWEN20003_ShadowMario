@@ -1,4 +1,4 @@
-package enums;
+package GameEntities;
 
 /**
  * Enums for moving direction
