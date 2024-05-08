@@ -16,6 +16,7 @@ import GameProperties.GameProps;
 import Scenes.GameStage;
 import Scenes.Scene;
 import bagel.Input;
+import bagel.util.Colour;
 import bagel.util.Point;
 import utils.Fonts;
 import utils.IOUtils;
@@ -54,14 +55,17 @@ public abstract class PlayingScene implements Scene {
 
             switch (name) {
                 case "PLAYER":
+                    int scoreSize = Integer.parseInt(gameProps.getProperty("score.fontSize"));
                     ScoreStatusMessage scoreStatusMessage = new ScoreStatusMessage("",
                             new Point(Double.parseDouble(gameProps.getProperty("score.x")),
                                     Double.parseDouble(gameProps.getProperty("score.y"))),
-                            Fonts.getMediumFont(), false);
+                            Fonts.getFont(scoreSize), false);
+
+                    int playerHealthSize = Integer.parseInt(gameProps.getProperty("playerHealth.fontSize"));
                     HealthStatusMessage healthStatusMessage = new HealthStatusMessage("",
                             new Point(Double.parseDouble(gameProps.getProperty("playerHealth.x")),
                                     Double.parseDouble(gameProps.getProperty("playerHealth.y"))),
-                            Fonts.getMediumFont(), false);
+                            Fonts.getFont(playerHealthSize), false);
                     allMessages.add(scoreStatusMessage);
                     allMessages.add(healthStatusMessage);
 
@@ -91,10 +95,11 @@ public abstract class PlayingScene implements Scene {
                 case "ENEMY_BOSS":
                     // TODO: Change the font class
                     // Create a status message for health
+                    int bossHealthSize = Integer.parseInt(gameProps.getProperty("enemyBossHealth.fontSize"));
                     HealthStatusMessage healthBossStatusMessage = new HealthStatusMessage("",
                             new Point(Double.parseDouble(gameProps.getProperty("enemyBossHealth.x")),
                                     Double.parseDouble(gameProps.getProperty("enemyBossHealth.y"))),
-                            Fonts.getMediumFont(), false);
+                            Fonts.getFont(bossHealthSize), false, Colour.RED);
                     allMessages.add(healthBossStatusMessage);
 
                     EnemyBoss enemyBoss = new EnemyBoss(location, this);

@@ -1,6 +1,8 @@
 package utils;
 
+import bagel.DrawOptions;
 import bagel.Font;
+import bagel.util.Colour;
 import bagel.util.Point;
 
 /**
@@ -13,10 +15,17 @@ public class Message {
     // (although don't need that feature for now)
     private Point location;
     private final Font FONT;
+    private DrawOptions options;
 
     public Message(String messageStr, Point location, Font font, boolean isCentered){
+        this(messageStr, location, font, isCentered, Colour.WHITE);
+    }
+
+    public Message(String messageStr, Point location, Font font, boolean isCentered, Colour color){
         this.messageStr = messageStr;
         this.FONT = font;
+        this.options = new DrawOptions();
+        options.setBlendColour(color);
 
         // If the text needs centering, then shift left half the width of the string
         // since the message is drawn from the bottom left
@@ -28,7 +37,7 @@ public class Message {
     }
 
     public void write(){
-        FONT.drawString(messageStr, location.x, location.y);
+        FONT.drawString(messageStr, location.x, location.y, options);
     }
 
     public void setMessageContent(String newMessageStr){
