@@ -60,8 +60,8 @@ public class ShadowMario extends AbstractGame {
         // Games stage setting
         BACKGROUND_IMAGE.draw(Window.getWidth()/2.0, Window.getHeight()/2.0);
         Scene currentScene = sceneIterator.nextScene();
-        currentScene.drawScene();
         currentScene.updateScene(input);
+        currentScene.drawScene();
     }
 
 }

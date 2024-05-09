@@ -174,19 +174,22 @@ public abstract class PlayingScene implements Scene {
     }
 
     /**
-     * Call the update method on all gameEntities, passing on the input as delegation
+     * Call the update method on all gameEntities, passing on the input as delegation, and handle collision
      * @param input
      */
     @Override
     public void updateScene(Input input) {
         cleanDeletedEntity();
-        this.collisionMediator.handleCollision();
+
         for (GameEntity entity: allGameEntities){
             entity.updatePerFrame(input);
         }
 
         // Flush the buffer to actually add game entities to the internal list
         flushBuffer();
+
+        // Handle collision
+        this.collisionMediator.handleCollision();
     }
 
 
