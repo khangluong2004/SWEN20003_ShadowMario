@@ -126,6 +126,9 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
 
             // Set jump acceleration always to simulate gravity
             this.velocity += JUMP_ACCELERATION;
+            // Lock jump until collided with platform
+            this.lockJump = true;
+
         } else {
             // If lost, then just continue the downward movement
             move(MoveDirection.CONTINUE);
@@ -262,7 +265,7 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
      * @param platform
      */
     private void handleCollisionEntity(Platform platform){
-        // Stop jumping
+        // Stop falling and allow jumping
         this.lockJump = false;
         this.velocity = 0;
 
@@ -290,7 +293,7 @@ public class Player extends GameEntity implements Movable, RadiusCollidable, Kil
             return;
         }
 
-        // Stop jumping
+        // Stop falling and allow jumping
         this.lockJump = false;
         this.velocity = 0;
 
