@@ -14,6 +14,10 @@ import GameEntities.MoveDirection;
 
 import java.util.List;
 
+/**
+ * Abstract class for pickup item (Coin, DoublePower, InvinciblePower), with common functionalities
+ * (collidable, popping out of screen after collided and can only be collided once)
+ */
 public abstract class PickupItem extends GameEntity implements Movable, RadiusCollidable {
     protected int POPPING_SPEED;
     protected double STEP_SIZE;
@@ -21,16 +25,31 @@ public abstract class PickupItem extends GameEntity implements Movable, RadiusCo
     protected int verticalVelocity;
     protected boolean isPlayerCollided;
 
+    /**
+     * Constructor (helper) for the inherited class
+     * @param entityImages list of images
+     * @param currentImageIndex initial image index
+     * @param location location
+     * @param scene the scene the entity is in
+     */
     public PickupItem(List<Image> entityImages, int currentImageIndex, Point location, PlayingScene scene) {
         super(entityImages, currentImageIndex, location, scene);
         this.verticalVelocity = 0;
         this.isPlayerCollided = false;
     }
 
+    /**
+     * Return the isPlayerCollided flag
+     * @return flag if the player is collided or not
+     */
     public boolean isPlayerCollided() {
         return isPlayerCollided;
     }
 
+    /**
+     * Update entity per frame
+     * @param input user input
+     */
     @Override
     public void updatePerFrame(Input input){
         updateMove(input);

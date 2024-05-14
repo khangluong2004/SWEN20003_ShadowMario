@@ -36,6 +36,10 @@ public class EndFlag extends GameEntity implements RadiusCollidable, Movable {
         this.STEP_SIZE = Integer.parseInt(gameProps.getProperty("gameObjects.endFlag.speed"));
     }
 
+    /**
+     * Update the entity per frame
+     * @param input
+     */
     @Override
     public void updatePerFrame(Input input){
         updateMove(input);

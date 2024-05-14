@@ -40,7 +40,6 @@ import java.util.Set;
 /**
  * Player class, handling the changing image when the player is moving
  * left or right, jumping motion, losing motion, collision side effects and status notifications for displays
- *
  */
 public class Player extends GameEntity implements Movable, RadiusCollidable, Killable, Fireable, ScoreContainer, StatusContainer {
     // Images and constants

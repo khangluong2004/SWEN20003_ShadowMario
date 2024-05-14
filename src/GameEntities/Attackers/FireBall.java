@@ -29,6 +29,13 @@ public class FireBall extends GameEntity implements Movable, Attacker, RadiusCol
     private final Fireable firer;
     private final int velocity;
 
+    /**
+     * Make FireBall, initialize constants and attributes (direction, firer)
+     * @param location
+     * @param moveLeft
+     * @param firer
+     * @param scene
+     */
     public FireBall(Point location, boolean moveLeft, Fireable firer, PlayingScene scene){
         super(new ArrayList<Image>(), 0, location, scene);
         Properties gameProps = GameProps.getGameProps();
@@ -50,11 +57,20 @@ public class FireBall extends GameEntity implements Movable, Attacker, RadiusCol
         }
     }
 
+    /**
+     * Update the entities per frame
+     * @param input
+     */
     @Override
     public void updatePerFrame(Input input){
         updateMove(input);
     }
 
+    /**
+     * Get the damage for the attacker
+     * @param entity
+     * @return
+     */
     @Override
     public double getDamage(GameEntity entity) {
         return DAMAGE_SIZE;

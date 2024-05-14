@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
 
+/**
+ * Class for the FlyingPlatform, handling movement and display
+ */
 public class FlyingPlatform extends GameEntity implements Movable, Collidable {
     private final int STEP_SIZE;
     private final int RANDOM_STEP_SIZE;
@@ -25,6 +28,11 @@ public class FlyingPlatform extends GameEntity implements Movable, Collidable {
     private int randomDisplacement;
 
 
+    /**
+     * Make the FlyingPlatform, initialize constants (STEP_SIZE, RANDOM_STEP_SIZE, MAX_DISPLACEMENT)
+     * @param location location
+     * @param scene scene
+     */
     public FlyingPlatform(Point location, PlayingScene scene){
         super(new ArrayList<Image>(), 0, location, scene);
         Properties gameProps = GameProps.getGameProps();
@@ -35,10 +43,13 @@ public class FlyingPlatform extends GameEntity implements Movable, Collidable {
 
         this.entityImages.add(new Image(gameProps.getProperty("gameObjects.flyingPlatform.image")));
         this.randomDisplacement = 0;
-        this.updateDirection();
+        this.initializeRandomDirection();
     }
 
-    private void updateDirection(){
+    /**
+     * Pick a random direction initially, then initialize the velocity
+     */
+    private void initializeRandomDirection(){
         Random random = new Random();
         boolean toLeft = random.nextBoolean();
         if (toLeft){
@@ -49,6 +60,10 @@ public class FlyingPlatform extends GameEntity implements Movable, Collidable {
         }
     }
 
+    /**
+     * Update the entity per frame (mostly movement)
+     * @param input input
+     */
     @Override
     public void updatePerFrame(Input input){
         updateMove(input);

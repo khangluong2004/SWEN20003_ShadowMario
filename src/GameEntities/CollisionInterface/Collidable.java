@@ -1,6 +1,5 @@
 package GameEntities.CollisionInterface;
 
-import java.awt.*;
 
 /**
  * Interface for entities that can collide with other entities,

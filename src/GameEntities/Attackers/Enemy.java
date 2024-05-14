@@ -33,6 +33,11 @@ public class Enemy extends GameEntity implements RadiusCollidable, Movable, Atta
     private int velocity;
     private int randomDisplacement;
 
+    /**
+     * Make Enemy, initialize constants, directions and attributes
+     * @param location
+     * @param scene
+     */
     public Enemy(Point location, PlayingScene scene){
         super(new ArrayList<Image>(), 0, location, scene);
         Properties gameProps = GameProps.getGameProps();
@@ -46,10 +51,13 @@ public class Enemy extends GameEntity implements RadiusCollidable, Movable, Atta
         this.entityImages.add(new Image(gameProps.getProperty("gameObjects.enemy.image")));
         this.inflictedDamage = false;
         this.randomDisplacement = 0;
-        this.updateDirection();
+        this.initializeRandomDirection();
     }
 
-    private void updateDirection(){
+    /**
+     * Pick a random direction and set the velocity
+     */
+    private void initializeRandomDirection(){
         Random random = new Random();
         boolean toLeft = random.nextBoolean();
         if (toLeft){
@@ -60,6 +68,10 @@ public class Enemy extends GameEntity implements RadiusCollidable, Movable, Atta
         }
     }
 
+    /**
+     * Update the entities per frame
+     * @param input
+     */
     @Override
     public void updatePerFrame(Input input){
         updateMove(input);

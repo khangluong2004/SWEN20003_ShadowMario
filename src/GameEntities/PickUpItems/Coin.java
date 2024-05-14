@@ -33,7 +33,10 @@ public class Coin extends PickupItem {
         this.entityImages.add(new Image(gameProps.getProperty("gameObjects.coin.image")));
     }
 
-
+    /**
+     * Get coin value
+     * @return coin value
+     */
     public int getCoinValue(){
         return this.COIN_VALUE;
     }

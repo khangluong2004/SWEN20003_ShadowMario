@@ -8,8 +8,17 @@ import bagel.util.Point;
 import java.util.ArrayList;
 import java.util.Properties;
 
+/**
+ * Class for the invincible power pickup item
+ */
 public class InvinciblePower extends PickupItem{
     private final int INVINCIBLE_LASTING_FRAMES;
+
+    /**
+     * Make an invincible power pickup item
+     * @param location location
+     * @param scene the scene it's in
+     */
     public InvinciblePower(Point location, PlayingScene scene){
         super(new ArrayList<Image>(), 0, location, scene);
         Properties gameProps = GameProps.getGameProps();
@@ -22,6 +31,10 @@ public class InvinciblePower extends PickupItem{
         this.entityImages.add(new Image(gameProps.getProperty("gameObjects.invinciblePower.image")));
     }
 
+    /**
+     * Get the lasting frame for invincible ability
+     * @return
+     */
     public int getInvincibleLastingFrames(){
         return this.INVINCIBLE_LASTING_FRAMES;
     }

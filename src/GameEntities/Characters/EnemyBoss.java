@@ -33,7 +33,12 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
     // Status observers for the status message
     private Set<StatusObserver> observers;
 
-
+    /**
+     * Make an enemy boss, initialize constants (images, RADIUS, speed, firing frame, ...) and initial attributes
+     * (velocity, health, ...)
+     * @param location location
+     * @param scene the scene it's in
+     */
     public EnemyBoss(Point location, PlayingScene scene) {
         super(new ArrayList<Image>(), 0, location, scene);
         Properties gameProps = GameProps.getGameProps();
@@ -175,16 +180,27 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
     }
 
 
+    /**
+     * Add status observer (eg: health status message)
+     * @param observer
+     */
     @Override
     public void addStatusObserver(StatusObserver observer) {
         this.observers.add(observer);
     }
 
+    /**
+     * Remove status observer
+     * @param observer
+     */
     @Override
     public void removeObserver(StatusObserver observer) {
         this.observers.remove(observer);
     }
 
+    /**
+     * Notify all registered observers
+     */
     @Override
     public void notifyObservers() {
         for (StatusObserver observer: observers){
@@ -192,6 +208,11 @@ public class EnemyBoss extends GameEntity implements Fireable, Movable, Killable
         }
     }
 
+    /**
+     * Get the collision radius of the entity
+     * @param entity
+     * @return
+     */
     @Override
     public double getCollisionRadius(Collidable entity) {
         return this.RADIUS;
