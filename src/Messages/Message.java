@@ -17,6 +17,13 @@ public class Message {
     private final Font FONT;
     private DrawOptions options;
 
+    /**
+     * Create a message
+     * @param messageStr content of the message
+     * @param location location
+     * @param font font
+     * @param isCentered if want to center or not
+     */
     public Message(String messageStr, Point location, Font font, boolean isCentered){
         this(messageStr, location, font, isCentered, Colour.WHITE);
     }
@@ -36,10 +43,17 @@ public class Message {
         }
     }
 
+    /**
+     * Write/ draw the text on the screen
+     */
     public void write(){
         FONT.drawString(messageStr, location.x, location.y, options);
     }
 
+    /**
+     * Set/ change the content of the message
+     * @param newMessageStr new message contents
+     */
     public void setMessageContent(String newMessageStr){
         messageStr = newMessageStr;
     }
