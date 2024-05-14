@@ -7,8 +7,8 @@ import bagel.*;
 import java.util.Properties;
 
 /*
- * Implementation based on skeleton Code for SWEN20003 Project 1, Semester 1, 2024
- *
+ * Implementation based on submission Code for SWEN20003 Project 1, Semester 1, 2024
+ * Project 2B
  * Please enter your name below
  * @author LUONG AN KHANG
  */
@@ -30,6 +30,7 @@ public class ShadowMario extends AbstractGame {
               messageProps.getProperty("title"));
 
         BACKGROUND_IMAGE = new Image(gameProps.getProperty("backgroundImage"));
+        // Create a scene iterator
         sceneIterator = new SceneIterator();
     }
 
@@ -59,9 +60,13 @@ public class ShadowMario extends AbstractGame {
 
         // Games stage setting
         BACKGROUND_IMAGE.draw(Window.getWidth()/2.0, Window.getHeight()/2.0);
-        Scene currentScene = sceneIterator.nextScene();
-        currentScene.updateScene(input);
-        currentScene.drawScene();
+
+        // If still have next scene, then get the scene, update it then draw it
+        if (sceneIterator.hasNextScene()){
+            Scene currentScene = sceneIterator.nextScene();
+            currentScene.updateScene(input);
+            currentScene.drawScene();
+        }
     }
 
 }

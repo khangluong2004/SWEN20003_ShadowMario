@@ -17,10 +17,9 @@ public class IOUtils {
     /***
      * Method that reads a CSV file and return a 2D String array
      * @param csvFile: the path to the CSV file
-     * @return 2D String array
+     * @return List of String array
      */
     public static List<String[]> readCsv(String csvFile) {
-        // Assume 50 lines in csv
         List<String[]> result = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))){
             String line;

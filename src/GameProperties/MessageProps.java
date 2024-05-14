@@ -9,8 +9,14 @@ import java.util.Properties;
  */
 public class MessageProps {
     private static Properties messageProps;
+
+    // Set private constructor to prevent external access
     private MessageProps(){};
 
+    /**
+     * Get the message props
+     * @return the single message props
+     */
     public static Properties getMessageProps(){
         if (messageProps == null){
             messageProps = IOUtils.readPropertiesFile("res/message_en.properties");

@@ -10,8 +10,12 @@ import java.util.Properties;
  * Create a wrapper for less lengthy font constructor
  */
 
-// TODO: Might need to create a more adaptive one for each type
 public class Fonts {
+    /**
+     * Get font based on font size
+     * @param fontSize fontSize
+     * @return font with font size (and correct font)
+     */
     public static Font getFont(int fontSize){
         Properties gameProps = GameProps.getGameProps();
         return new Font(gameProps.getProperty("font"), fontSize);
