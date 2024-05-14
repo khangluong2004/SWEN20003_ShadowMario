@@ -26,7 +26,7 @@ import Messages.StatusMessages.ScoreStatusMessage;
 import java.util.*;
 
 /**
- * Class for the PlayingScene (where the user can play).
+ * Abstract class for the PlayingScene (where the user can play).
  * Make use of Factory method pattern, with the loadScene and loadCollisionDetectors
  * being the factory method(s) which will be overriden by specific Level to load appropriate objects
  */
@@ -38,6 +38,10 @@ public abstract class PlayingScene implements Scene {
     protected CollisionMediator collisionMediator;
     private GameStage gameStage;
 
+    /**
+     * Constructor (helper) to initialize all the storage and game stage
+     * Call the factory method to load scene and collision detectors
+     */
     public PlayingScene(){
         allMessages = new ArrayList<Message>();
         allGameEntities = new ArrayList<GameEntity>();
@@ -45,6 +49,7 @@ public abstract class PlayingScene implements Scene {
         collisionMediator = new CollisionMediator(allGameEntities);
         this.gameStage = GameStage.PLAYING;
 
+        // Call factory methods
         this.loadScene();
         this.loadCollisionDetectors();
     }
@@ -140,6 +145,20 @@ public abstract class PlayingScene implements Scene {
         }
     };
 
+    /**
+     * Draw all gameEntities and message
+     */
+    @Override
+    public void drawScene() {
+        for (GameEntity entity: allGameEntities){
+            entity.draw();
+        }
+
+        for (Message message: allMessages){
+            message.write();
+        }
+    }
+
 
     /**
      * Methods to add game entity to a buffer, which will be added after the update to avoid interfere with
@@ -160,20 +179,6 @@ public abstract class PlayingScene implements Scene {
     }
 
     /**
-     * Draw all gameEntities and message
-     */
-    @Override
-    public void drawScene() {
-        for (GameEntity entity: allGameEntities){
-            entity.draw();
-        }
-
-        for (Message message: allMessages){
-            message.write();
-        }
-    }
-
-    /**
      * Call the update method on all gameEntities, passing on the input as delegation, and handle collision
      * @param input
      */
@@ -185,22 +190,11 @@ public abstract class PlayingScene implements Scene {
             entity.updatePerFrame(input);
         }
 
-        // Flush the buffer to actually add game entities to the internal list
+        // Flush the buffer to actually add game entities (if any) to the internal list
         flushBuffer();
 
         // Handle collision
         this.collisionMediator.handleCollision();
-    }
-
-
-    @Override
-    public boolean isEnd() {
-        return checkWinning() || checkLosing();
-    }
-
-    public GameStage getGameStage(){
-        this.isEnd();
-        return this.gameStage;
     }
 
     /**
@@ -259,6 +253,25 @@ public abstract class PlayingScene implements Scene {
     }
 
     /**
+     * Check if the scene end
+     * @return
+     */
+    @Override
+    public boolean isEnd() {
+        return checkWinning() || checkLosing();
+    }
+
+    /**
+     * Get the current game stage
+     * @return the current game stage
+     */
+    public GameStage getGameStage(){
+        this.isEnd();
+        return this.gameStage;
+    }
+
+
+    /**
      * Clean the deleted GameEntity to save space every update,
      * and simplify collision handling and losing/winning stage checking
      */
@@ -274,8 +287,5 @@ public abstract class PlayingScene implements Scene {
         allGameEntities.removeAll(deletedEntities);
         collisionMediator.removeDeletedCollision(deletedEntities);
     }
-
-
-
 
 }

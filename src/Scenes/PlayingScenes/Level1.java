@@ -11,12 +11,18 @@ import java.util.Properties;
  */
 public class Level1 extends PlayingScene{
 
+    /**
+     * Load entities from a level1file
+     */
     @Override
     protected void loadScene() {
         Properties gameProps = GameProps.getGameProps();
         this.loadScene(gameProps.getProperty("level1File"));
     }
 
+    /**
+     * Add required collision detector
+     */
     @Override
     protected void loadCollisionDetectors() {
         this.collisionMediator.addCollisionDetector(new PlayerPlatformCollisionDetector());

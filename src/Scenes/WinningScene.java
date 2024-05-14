@@ -12,6 +12,10 @@ import java.util.Properties;
  * Implementation of Text Scene for WinningScene
  */
 public class WinningScene extends TextScene{
+    /**
+     * Load winning message
+     */
+    @Override
     protected void loadScene() {
         Properties messageProps = MessageProps.getMessageProps();
         Properties gameProps = GameProps.getGameProps();

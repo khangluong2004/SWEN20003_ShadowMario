@@ -14,9 +14,9 @@ import java.util.Properties;
  * Initial scene which contains the instruction and title
  */
 public class IntroductionScene extends TextScene{
-    private int curLevel;
+    private int nextLevel;
     /***
-     * Load the messages of the scene
+     * Load the messages of the scene, and initialize current Level (which will be updated based on user input)
      * @param
      */
 
@@ -38,31 +38,35 @@ public class IntroductionScene extends TextScene{
         this.messages.add(title);
         this.messages.add(instruction);
 
-        this.curLevel = -1;
+        this.nextLevel = -1;
     }
 
     /**
      * Update the internal storage of the next level based on input,
      * and mark end scene if 1, 2 or 3 is pressed
-     * @param input
+     * @param input user input
      */
     @Override
     public void updateScene(Input input){
         isEnd = true;
         if (input.isDown(Keys.NUM_1)){
-            curLevel = 1;
+            nextLevel = 1;
         } else if (input.isDown(Keys.NUM_2)){
-            curLevel = 2;
+            nextLevel = 2;
         } else if (input.isDown(Keys.NUM_3)){
-            curLevel = 3;
+            nextLevel = 3;
         } else {
             isEnd = false;
         }
 
     }
 
+    /**
+     * Get the next level (-1 if unset)
+     * @return next level
+     */
     public int getNextLevel(){
-        return curLevel;
+        return nextLevel;
     }
 
 

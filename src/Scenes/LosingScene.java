@@ -13,6 +13,10 @@ import java.util.Properties;
  */
 public class LosingScene extends TextScene{
 
+    /**
+     * Load the messages for losing scene
+     */
+    @Override
     protected void loadScene() {
         Properties messageProps = MessageProps.getMessageProps();
         Properties gameProps = GameProps.getGameProps();

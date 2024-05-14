@@ -8,14 +8,16 @@ import Scenes.PlayingScenes.*;
 public class SceneIterator {
     private Scene currentScene;
 
+    /**
+     * Make the scene iterator and start with the introduction scene
+     */
     public SceneIterator(){
         this.currentScene = new IntroductionScene();
     }
 
     /***
      * Handling switching scenes with Iterator pattern
-     * @param
-     * @return
+     * @return the currentScene (or the next one if the current ends)
      */
     public Scene nextScene(){
         // If the scene hasn't ended, change nothing
@@ -24,6 +26,7 @@ public class SceneIterator {
         }
 
         // Else, move to the corresponding next scene
+        // Introduction -> Correct level scene
         if (currentScene instanceof IntroductionScene){
             IntroductionScene currentScene = (IntroductionScene) this.currentScene;
             int curLevel = currentScene.getNextLevel();
@@ -39,6 +42,7 @@ public class SceneIterator {
                     break;
             }
         } else if (currentScene instanceof PlayingScene){
+            // Playing -> Correct ending scene
             PlayingScene currentScene = (PlayingScene) this.currentScene;
             if (currentScene.getGameStage() == GameStage.WINNING){
                 this.currentScene = new WinningScene();
@@ -46,6 +50,7 @@ public class SceneIterator {
                 this.currentScene = new LosingScene();
             }
         } else {
+            // Ending scene -> Introduction scene
             this.currentScene = new IntroductionScene();
         }
 

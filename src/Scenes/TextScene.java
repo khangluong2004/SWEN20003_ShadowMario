@@ -13,16 +13,22 @@ import java.util.List;
  */
 public abstract class TextScene implements Scene{
     protected boolean isEnd;
-    protected List<Message> messages = new ArrayList<Message>();
+    protected List<Message> messages;
 
+    /**
+     * Initialize the text scene's storage and by calling the factory methods
+     */
     public TextScene(){
+        this.messages = new ArrayList<Message>();
+        this.isEnd = false;
+
         this.loadScene();
     }
 
     /**
      * Factory method which loads different message depends on the implementation
      */
-    protected void loadScene(){};
+    protected abstract void loadScene();
 
     /**
      * Draw the scene
@@ -48,7 +54,7 @@ public abstract class TextScene implements Scene{
 
     /**
      * Check if the scene ends
-     * @return
+     * @return if the scene ends
      */
     @Override
     public boolean isEnd() {

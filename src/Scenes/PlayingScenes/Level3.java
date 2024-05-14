@@ -12,12 +12,18 @@ import java.util.Properties;
  * Implementation of Playing Scene for Level 3
  */
 public class Level3 extends PlayingScene{
+    /**
+     * Load from level3File
+     */
     @Override
     protected void loadScene() {
         Properties gameProps = GameProps.getGameProps();
         this.loadScene(gameProps.getProperty("level3File"));
     }
 
+    /**
+     * Initialize collision detectors
+     */
     @Override
     protected void loadCollisionDetectors() {
         this.collisionMediator.addCollisionDetector(new PlayerPlatformCollisionDetector());
