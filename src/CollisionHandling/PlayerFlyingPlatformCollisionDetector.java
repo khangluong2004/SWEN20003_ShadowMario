@@ -8,7 +8,16 @@ import bagel.util.Point;
 
 import java.util.Properties;
 
+/**
+ * Class for the collision detector between the player and flying platform
+ */
 public class PlayerFlyingPlatformCollisionDetector implements CollisionDetector{
+    /**
+     * Check the type and collision
+     * @param entity1 first entity
+     * @param entity2 second entity
+     * @return outcome of collision check
+     */
     @Override
     public CollisionType checkCollision(Collidable entity1, Collidable entity2) {
         if (!(entity1 instanceof Player && entity2 instanceof FlyingPlatform)){
@@ -18,6 +27,12 @@ public class PlayerFlyingPlatformCollisionDetector implements CollisionDetector{
         return checkCollision((Player) entity1, (FlyingPlatform) entity2) ? CollisionType.COLLIDED: CollisionType.NOT_COLLIDED;
     }
 
+    /**
+     * Check for the collision between the player and the flying platform with the criteria given in the spec
+     * @param player player
+     * @param flyingPlatform flying platform
+     * @return outcome of collision
+     */
     private boolean checkCollision(Player player, FlyingPlatform flyingPlatform){
         Properties gameProps = GameProps.getGameProps();
         Point playerLocation = player.getLocation();
