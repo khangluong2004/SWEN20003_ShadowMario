@@ -1,8 +1,7 @@
-package utils;
+package Utils;
 
 import GameProperties.GameProps;
 import bagel.*;
-import bagel.util.Colour;
 
 import java.util.Properties;
 

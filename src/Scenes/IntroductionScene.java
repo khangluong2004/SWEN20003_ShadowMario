@@ -2,7 +2,7 @@ package Scenes;
 
 import GameProperties.GameProps;
 import GameProperties.MessageProps;
-import utils.Fonts;
+import Utils.Fonts;
 import Messages.Message;
 import bagel.Input;
 import bagel.Keys;

@@ -7,7 +7,7 @@ import bagel.Font;
 import bagel.util.Colour;
 import bagel.util.Point;
 import Messages.Message;
-import utils.PercentageUtils;
+import Utils.PercentageUtils;
 
 import java.util.Properties;
 

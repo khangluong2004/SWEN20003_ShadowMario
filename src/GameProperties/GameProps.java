@@ -1,6 +1,6 @@
 package GameProperties;
 
-import utils.IOUtils;
+import Utils.IOUtils;
 
 import java.util.Properties;
 

@@ -3,7 +3,7 @@ package Scenes;
 import GameProperties.GameProps;
 import GameProperties.MessageProps;
 import bagel.util.Point;
-import utils.Fonts;
+import Utils.Fonts;
 import Messages.Message;
 
 import java.util.Properties;

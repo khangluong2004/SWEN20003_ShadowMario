@@ -1,4 +1,4 @@
-package utils;
+package Utils;
 
 /**
  * Very small "functional" to provide small helpers with conversion to percent
