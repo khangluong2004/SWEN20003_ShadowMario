@@ -12,8 +12,8 @@ import java.util.Set;
  */
 public class CollisionMediator {
     // Keep a references of all entities in the scene owned it
-    private List<GameEntity> allGameEntities;
-    private List<CollisionDetector> collisionDetectors;
+    private final List<GameEntity> allGameEntities;
+    private final List<CollisionDetector> collisionDetectors;
 
     /**
      * Create a collision mediator, and passed in the reference to the list of game entities
@@ -23,7 +23,7 @@ public class CollisionMediator {
      */
     public CollisionMediator(List<GameEntity> allGameEntities){
         this.allGameEntities = allGameEntities;
-        this.collisionDetectors = new ArrayList<CollisionDetector>();
+        this.collisionDetectors = new ArrayList<>();
     }
 
     /***
