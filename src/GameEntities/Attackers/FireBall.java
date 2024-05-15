@@ -63,6 +63,10 @@ public class FireBall extends GameEntity implements Movable, Attacker, RadiusCol
      */
     @Override
     public void updatePerFrame(Input input){
+        if (checkReachBoundary()){
+            isDeleted = true;
+            return;
+        }
         updateMove(input);
     }
 
@@ -110,11 +114,6 @@ public class FireBall extends GameEntity implements Movable, Attacker, RadiusCol
             return;
         }
 
-        if (checkReachBoundary()){
-            isDeleted = true;
-            return;
-        }
-
         if (direction == MoveDirection.LEFT){
             this.location = new Point(location.x + STEP_SIZE, location.y);
         } else if (direction == MoveDirection.RIGHT){
@@ -133,8 +132,7 @@ public class FireBall extends GameEntity implements Movable, Attacker, RadiusCol
      * @return
      */
     private boolean checkReachBoundary(){
-        return ((velocity < 0 && this.location.x <= LOWER_BOUNDARY)
-                || (velocity > 0 && this.location.x >= UPPER_BOUNDARY));
+        return (this.location.x <= LOWER_BOUNDARY || this.location.x >= UPPER_BOUNDARY);
     }
 
     /**
