@@ -31,13 +31,13 @@ public class FireBall extends GameEntity implements Movable, Attacker, RadiusCol
 
     /**
      * Make FireBall, initialize constants and attributes (direction, firer)
-     * @param location
-     * @param moveLeft
-     * @param firer
-     * @param scene
+     * @param location location
+     * @param moveLeft if move left
+     * @param firer firer object
+     * @param scene scene
      */
     public FireBall(Point location, boolean moveLeft, Fireable firer, PlayingScene scene){
-        super(new ArrayList<Image>(), 0, location, scene);
+        super(new ArrayList<>(), 0, location, scene);
         Properties gameProps = GameProps.getGameProps();
 
         this.firer = firer;
@@ -59,7 +59,7 @@ public class FireBall extends GameEntity implements Movable, Attacker, RadiusCol
 
     /**
      * Update the entities per frame
-     * @param input
+     * @param input user input
      */
     @Override
     public void updatePerFrame(Input input){
@@ -72,8 +72,8 @@ public class FireBall extends GameEntity implements Movable, Attacker, RadiusCol
 
     /**
      * Get the damage for the attacker
-     * @param entity
-     * @return
+     * @param entity entity to damage
+     * @return damage size
      */
     @Override
     public double getDamage(GameEntity entity) {
@@ -82,8 +82,8 @@ public class FireBall extends GameEntity implements Movable, Attacker, RadiusCol
 
     /**
      * Test if the entity is a firer (so don't deal damage)
-     * @param entity
-     * @return
+     * @param entity collided entity
+     * @return is firer or not
      */
     public boolean isFirer(Collidable entity){
         // Use equality operators, since we actually want to check
@@ -106,7 +106,7 @@ public class FireBall extends GameEntity implements Movable, Attacker, RadiusCol
 
     /**
      * Move relative to the player, and continue its horizontal movement
-     * @param direction
+     * @param direction movement direction
      */
     @Override
     public void move(MoveDirection direction) {
@@ -129,7 +129,7 @@ public class FireBall extends GameEntity implements Movable, Attacker, RadiusCol
      * Check if the fireball is out of screen and should be deleted
      * Take into account the direction of the fireball (eg: If it's fired
      * from the left, then only delete when it passes the right boundary)
-     * @return
+     * @return if in screen boundary
      */
     private boolean checkReachBoundary(){
         return (this.location.x <= LOWER_BOUNDARY || this.location.x >= UPPER_BOUNDARY);
@@ -137,8 +137,8 @@ public class FireBall extends GameEntity implements Movable, Attacker, RadiusCol
 
     /**
      * Get Collision radius
-     * @param entity
-     * @return
+     * @param entity collided entity
+     * @return the collision radius
      */
     @Override
     public double getCollisionRadius(Collidable entity) {
