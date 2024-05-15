@@ -17,7 +17,6 @@ public class IntroductionScene extends TextScene{
     private int nextLevel;
     /***
      * Load the messages of the scene, and initialize current Level (which will be updated based on user input)
-     * @param
      */
 
     @Override

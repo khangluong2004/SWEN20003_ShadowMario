@@ -59,7 +59,6 @@ public class SceneIterator {
 
     /***
      * Due to the infinite cycle of the game, the hasNextScene method always return true
-     * @return
      */
     public boolean hasNextScene(){
         return true;

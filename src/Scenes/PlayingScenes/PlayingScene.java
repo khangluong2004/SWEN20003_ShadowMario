@@ -28,7 +28,7 @@ import java.util.*;
 /**
  * Abstract class for the PlayingScene (where the user can play).
  * Make use of Factory method pattern, with the loadScene and loadCollisionDetectors
- * being the factory method(s) which will be overriden by specific Level to load appropriate objects
+ * being the factory method(s) which will be overridden by specific Level to load appropriate objects
  */
 public abstract class PlayingScene implements Scene {
     protected List<GameEntity> allGameEntities;
@@ -43,9 +43,9 @@ public abstract class PlayingScene implements Scene {
      * Call the factory method to load scene and collision detectors
      */
     public PlayingScene(){
-        allMessages = new ArrayList<Message>();
-        allGameEntities = new ArrayList<GameEntity>();
-        bufferedEntities = new ArrayList<GameEntity>();
+        allMessages = new ArrayList<>();
+        allGameEntities = new ArrayList<>();
+        bufferedEntities = new ArrayList<>();
         collisionMediator = new CollisionMediator(allGameEntities);
         this.gameStage = GameStage.PLAYING;
 
@@ -143,7 +143,7 @@ public abstract class PlayingScene implements Scene {
 
             allGameEntities.add(currentEntity);
         }
-    };
+    }
 
     /**
      * Draw all gameEntities and message
@@ -163,7 +163,6 @@ public abstract class PlayingScene implements Scene {
     /**
      * Methods to add game entity to a buffer, which will be added after the update to avoid interfere with
      * updating process
-     * @param entity
      */
     public void addGameEntity(GameEntity entity){
         bufferedEntities.add(entity);
@@ -180,7 +179,6 @@ public abstract class PlayingScene implements Scene {
 
     /**
      * Call the update method on all gameEntities, passing on the input as delegation, and handle collision
-     * @param input
      */
     @Override
     public void updateScene(Input input) {
@@ -200,7 +198,6 @@ public abstract class PlayingScene implements Scene {
     /**
      * Check if the player wins this game, by checking for reaching flag (level 1 and 2)
      * and no boss still exists (if any at the start)
-     * @return
      */
     private boolean checkWinning(){
         if (this.gameStage == GameStage.WINNING){
@@ -235,7 +232,6 @@ public abstract class PlayingScene implements Scene {
     /**
      * Check losing by checking if the player still exists in the scene
      * (if the player lost and moved out of the window, it's deleted)
-     * @return
      */
     private boolean checkLosing(){
         if (this.gameStage == GameStage.LOSING){
@@ -254,7 +250,6 @@ public abstract class PlayingScene implements Scene {
 
     /**
      * Check if the scene end
-     * @return
      */
     @Override
     public boolean isEnd() {

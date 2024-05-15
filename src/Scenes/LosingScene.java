@@ -24,7 +24,7 @@ public class LosingScene extends TextScene{
 
         int messageSize = Integer.parseInt(gameProps.getProperty("message.fontSize"));
         Message losingMessage = new Message(messageProps.getProperty("gameOver"), new Point(windowWidth * 1.0/2,
-                Integer.parseInt(gameProps.getProperty("message.y"))), Fonts.getFont(messageSize), true);;
+                Integer.parseInt(gameProps.getProperty("message.y"))), Fonts.getFont(messageSize), true);
 
         this.messages.add(losingMessage);
     }

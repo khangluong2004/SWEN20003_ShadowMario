@@ -15,7 +15,7 @@ public class Message {
     // (although don't need that feature for now)
     private Point location;
     private final Font FONT;
-    private DrawOptions options;
+    private final DrawOptions options;
 
     /**
      * Create a message

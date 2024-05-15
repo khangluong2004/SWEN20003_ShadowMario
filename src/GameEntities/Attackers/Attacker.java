@@ -8,8 +8,6 @@ import GameEntities.GameEntity;
 public interface Attacker {
     /**
      * Get the damage for the attacker
-     * @param entity
-     * @return
      */
     double getDamage(GameEntity entity);
 }

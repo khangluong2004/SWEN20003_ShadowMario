@@ -19,7 +19,7 @@ public abstract class TextScene implements Scene{
      * Initialize the text scene's storage and by calling the factory methods
      */
     public TextScene(){
-        this.messages = new ArrayList<Message>();
+        this.messages = new ArrayList<>();
         this.isEnd = false;
 
         this.loadScene();
@@ -43,7 +43,7 @@ public abstract class TextScene implements Scene{
     /**
      * Depends on the implementation. The default update is to end the scene when
      * Space is pressed.
-     * @param input
+     * @param input user input
      */
     @Override
     public void updateScene(Input input) {

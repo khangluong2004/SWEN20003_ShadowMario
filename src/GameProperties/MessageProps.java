@@ -11,7 +11,7 @@ public class MessageProps {
     private static Properties messageProps;
 
     // Set private constructor to prevent external access
-    private MessageProps(){};
+    private MessageProps(){}
 
     /**
      * Get the message props

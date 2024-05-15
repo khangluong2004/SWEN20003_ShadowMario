@@ -11,7 +11,7 @@ public class GameProps {
     private static Properties gameProps;
 
     // Set private constructor to prevent external access
-    private GameProps(){};
+    private GameProps(){}
 
     /**
      * Method to get game props
