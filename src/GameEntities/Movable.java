@@ -20,7 +20,7 @@ public interface Movable {
      */
     default void updateMove(Input input){
         // Move based on the input
-        if (input.isDown(Keys.UP)){
+        if (input.wasPressed(Keys.UP)){
             this.move(MoveDirection.UP);
         }
 
